@@ -1,0 +1,219 @@
+:root {
+    --navy: #001f3f;
+    --orange: #ff8c00;
+    --orange-dark: #e67e00;
+    --light-bg: #f4f7f6;
+    --white: #ffffff;
+    --danger: #d32f2f;
+    --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--light-bg);
+}
+
+.admin-header {
+    background-color: var(--navy);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.admin-logo { height: 50px; border-radius: 10%;}
+.header-text { margin-left: 15px; display: flex; flex-direction: column; }
+.header-left { display: flex; align-items: center; }
+.division { font-size: 1.2rem; font-weight: bold; }
+.portal { font-size: 0.8rem; color: var(--orange); letter-spacing: 1px; }
+
+.admin-content { padding: 30px 40px; max-width: 1200px; margin: 0 auto; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+.admin-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--orange);
+    transition: var(--transition);
+}
+
+.card-title {
+    color: var(--navy);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 4. Input & Select Styling */
+.input-group { position: relative; margin-bottom: 25px; }
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    transition: var(--transition);
+}
+
+.input-group label {
+    position: absolute;
+    top: 10px; left: 0;
+    color: #999;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.input-group input:focus ~ label, 
+.input-group input:valid ~ label {
+    top: -15px; font-size: 12px; color: var(--orange); font-weight: bold;
+}
+
+.input-group input:focus { border-bottom: 2px solid var(--orange); }
+
+/* 5. Buttons (Orange Theme) */
+.primary-btn {
+    width: 100%;
+    background-color: var(--orange);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.primary-btn:hover {
+    background-color: var(--orange-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logout-btn:hover { background: var(--orange); color: white; }
+
+.addssbutton, .addfeederbutton{
+    border: none;
+    background-color: #e67e00;
+    color: #001f3f;
+    padding: 20px;
+    border-radius: 20px;
+}
+.addssbutton:hover, .addfeederbutton:hover{
+    background-color: #ff8c00;
+    color: white;
+    border-color: #d32f2f;
+    border: solid 1px;
+    transition: 0.15s;
+}
+.f1,.f2{
+    display: none;
+}
+/* 6. Management Table */
+.table-card { border-top-color: var(--navy); } /* Diff color for table card */
+
+.tabs { margin-bottom: 20px; border-bottom: 1px solid #eee; }
+.tab-btn {
+    background: none; border: none; padding: 10px 20px;
+    cursor: pointer; color: #777; font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--orange); }
+
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th { text-align: left; padding: 12px; background: #f8f9fa; color: var(--navy); border-bottom: 2px solid #eee; }
+td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+
+.delete-btn {
+    background: none; border: 1px solid var(--danger);
+    color: var(--danger); padding: 4px 10px;
+    border-radius: 4px; cursor: pointer; transition: 0.3s;
+}
+
+.delete-btn:hover { background: var(--danger); color: white; }
+
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* Stacks the two entry cards on top of each other */
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-header {
+        padding: 15px 20px;
+        flex-direction: column; /* Stacks logo/text and logout button */
+        gap: 15px;
+        text-align: center;
+    }
+
+    .header-left {
+        flex-direction: column;
+    }
+
+    .header-text {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .admin-content {
+        padding: 20px 15px; /* Reduced side padding for more screen space */
+    }
+
+    .admin-card {
+        padding: 20px; /* More compact cards */
+    }
+
+    .tabs {
+        display: flex;
+        overflow-x: auto; /* Allows tabs to scroll if there are many */
+        white-space: nowrap;
+    }
+
+    .tab-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        flex: 1;
+        text-align: center;
+    }
+
+    /* Adjusting the Table for small screens */
+    th, td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+}
+
+/* Extra small devices (Phones under 480px) */
+@media (max-width: 480px) {
+    .division {
+        font-size: 1rem;
+    }
+
+    .portal {
+        font-size: 0.7rem;
+    }
+
+    .primary-btn, .logout-btn {
+        width: 100%; /* Full width buttons for easier tapping */
+    }
+}

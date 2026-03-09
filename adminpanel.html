@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GETCO Admin | Master Control</title>
+    <link rel="stylesheet" href="styles/adminpanel.css">
+    <link rel="icon" type="image/png" href="images/Logo_GETCO.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="header-left">
+            <img src="images/Logo_GETCO.png" alt="Logo" class="admin-logo">
+            <div class="header-text">
+                <span class="division">Amreli Transmission Division</span>
+                <span class="portal">Admin Management Portal</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <main class="admin-content">
+        
+        <div class="form-grid">
+            <section class="addbutton">
+                <button class="addssbutton" onclick="expandadss();">&#8594 Add New Substation</button>
+            </section>
+        </div>
+        <section class="admin-card f1 a1">
+            <div class="card-title">Register New Substation</div>
+            <div class="input-group">
+                <input type="text" id="new-ss-name" required>
+                <label>Substation Name</label>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-ss-id" required>
+                <label>Substation ID</label>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-ss-user" required>
+                <label>Assign Username</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="new-ss-pass" required>
+                <label>Set Password</label>
+            </div>
+            <button class="primary-btn" onclick="addSubstation()">Add Substation</button>
+        </section>
+        <div class="form-grid">
+            <section class="addbutton">
+                <button class="addfeederbutton" onclick="expandadfeeder();">&#8594 Add New Feeder</button>
+            </section>
+        </div>
+        <section class="admin-card f2 a2">
+            <div class="card-title">Add Feeder to Substation</div>
+            <div class="input-group">
+                <select id="ss-dropdown">
+                    <option value="" disabled selected>Select Substation...</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-feeder-name" required>
+                <label>Feeder Name</label>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-feeder-type" required>
+                <label>Feeder Type</label>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-feeder-group" required>
+                <label>Feeder Group</label>
+            </div>
+            <button class="primary-btn" onclick="addFeeder()">Link New Feeder</button>
+        </section>
+
+        <section class="admin-card table-card">
+            <div class="card-title">Database Management</div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('ss')">Substations</button>
+                <button class="tab-btn" onclick="showTab('feeders')">Feeders</button>
+            </div>
+
+            <div class="table-container">
+                <table id="mgmt-table">
+                    <thead>
+                        </thead>
+                    <tbody id="mgmt-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script src="script/admin.js"></script>
+</body>
+</html>

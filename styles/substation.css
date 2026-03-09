@@ -1,0 +1,543 @@
+:root {
+    --navy: #001f3f;
+    --navy-light: #082a4d;
+    --orange: #ff8c00;
+    --orange-dark: #e67e00;
+    --bg-light: #f4f7f6;
+    --white: #ffffff;
+    --text-main: #333333;
+    --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.top-bar {
+    background-color: var(--navy);
+    padding: 12px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.header-left { display: flex; align-items: center; }
+.logo { height: 55px; cursor: pointer; transition: 0.3s; }
+.logo:hover { transform: scale(1.05); }
+
+.brand-text { margin-left: 20px; display: flex; flex-direction: column; }
+.division { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.5px; }
+.company { font-size: 0.8rem; color: var(--orange); font-weight: 600; }
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logout-btn:hover { background: var(--orange); color: white; }
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.ss-info-card {
+    background: var(--white);
+    padding: 25px 35px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 6px solid var(--orange);
+    margin-bottom: 25px;
+}
+
+.label { font-size: 11px; color: #999; font-weight: 800; letter-spacing: 1px; }
+#ss-name-display { color: var(--navy); font-size: 1.5rem; margin-top: 5px; }
+
+.control-label { font-weight: 600; color: var(--navy-light); margin-right: 15px; }
+
+.time-controls{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.time-btn {
+    background: transparent;
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    padding: 10px 22px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.time-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+}
+
+.time-btn.active {
+    background-color: var(--orange);
+    border-color: var(--orange);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+}
+
+.table-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.table-header h3 { color: var(--navy); margin-bottom: 10px; }
+.orange-divider { width: 50px; height: 4px; background: var(--orange); margin-bottom: 25px; }
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 15px;
+}
+
+.mytable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mytable th {
+    background-color: #f8f9fa;
+    color: var(--navy);
+    padding: 15px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 2px solid #eee;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.mytable th:first-child { border-left: 3px solid var(--orange); }
+
+.mytable td {
+    padding: 14px 15px;
+    border-bottom: 1px solid #c0bfbf;
+    color: #555;
+}
+
+.mytable tr:hover {
+    background-color: #fff9f2; /* Light orange tint */
+}
+
+.t19, .t24{
+    display: none;
+}
+
+.mytable input {
+    width: 100%;
+    min-width: 60px;
+    max-width: 100px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+/* Capacitor Bank Section Styling */
+#capabankdet {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.cap-entry-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-left: 5px solid var(--orange); /* The GETCO Orange Accent */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.cap-name {
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cap-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* On Time gets a bit more space */
+    gap: 15px;
+}
+
+.input-box label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.time-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.time-input-group input, 
+.input-box > input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.time-input-group input:focus, 
+.input-box > input:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.2);
+}
+
+.separator {
+    font-weight: bold;
+    color: var(--navy);
+}
+/* Line Details Table Styling */
+.line-details-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 25px;
+}
+
+.line-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px; /* Creates a clean gap between rows */
+}
+
+.line-table th {
+    background: var(--navy);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.line-table th:first-child { border-radius: 8px 0 0 8px; }
+.line-table th:last-child { border-radius: 0 8px 8px 0; }
+
+.line-row td {
+    background: #fdfdfd;
+    padding: 12px 15px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.line-name-cell {
+    font-weight: 700;
+    color: var(--navy);
+    border-left: 4px solid #ddd;
+}
+
+.line-tag {
+    font-size: 10px;
+    background: #eee;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 8px;
+    color: #777;
+}
+
+/* Input Styling */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 10px;
+    transition: 0.3s;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+}
+
+.input-wrapper input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.unit {
+    font-size: 11px;
+    color: #bbb;
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+/* Hover Effect: Highlights the entire row in Orange */
+.line-row:hover .line-name-cell {
+    border-left-color: var(--orange);
+}
+
+.line-row:hover td {
+    background: #fff9f2;
+}
+
+.date-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* The Date Input Styling */
+.custom-date-picker {
+    background: var(--white);
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-weight: 700;
+    outline: none;
+    transition: var(--transition);
+    cursor: pointer;
+    height: 42px; /* Matches .time-btn height */
+}
+
+/* Highlight border on focus/click */
+.custom-date-picker:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 8px rgba(255, 140, 0, 0.2);
+}
+
+/* Customizing the Calendar Icon (Chrome/Edge/Safari) */
+.custom-date-picker::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(15%) sepia(95%) saturate(3932%) hue-rotate(193deg) brightness(91%) contrast(101%);
+    /* This filter turns the black icon into your Navy color */
+}
+
+.custom-date-picker::-webkit-calendar-picker-indicator:hover {
+    filter: invert(56%) sepia(94%) saturate(2254%) hue-rotate(1deg) brightness(103%) contrast(106%);
+    /* This filter turns it Orange on hover */
+}
+
+.submit-container {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+}
+
+.getco-btn-submit {
+    background-color: var(--orange);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 16px 45px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 0px var(--orange-dark), /* The 3D effect */
+                0 10px 20px rgba(255, 140, 0, 0.2);
+}
+
+/* Hover State: The button "lifts" up */
+.getco-btn-submit:hover:not(:disabled) {
+    background-color: var(--orange-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px #c76d00, 
+                0 12px 25px rgba(255, 140, 0, 0.3);
+}
+
+/* Active State: The button "pushes" down into the page */
+.getco-btn-submit:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0px #c76d00, 
+                0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Disabled State during submission */
+.getco-btn-submit:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-icon {
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+}
+
+.getco-btn-submit:hover .btn-icon {
+    transform: scale(1.2);
+}
+
+/* Loading Spinner */
+.btn-loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    display: none; /* Hidden by default */
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Mobile Adjustment: Stack them if screen is too narrow */
+@media (max-width: 768px) {
+    .time-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .date-input-wrapper {
+        justify-content: space-between;
+    }
+    
+    .custom-date-picker {
+        flex-grow: 1;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .line-table thead { display: none; } /* Hide headers on mobile */
+    .line-row td {
+        display: block;
+        width: 100%;
+        border: none;
+    }
+    .line-row {
+        display: block;
+        margin-bottom: 20px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+    }
+}
+/* Mobile Adjustment */
+@media (max-width: 480px) {
+    .cap-grid {
+        grid-template-columns: 1fr; /* Stack inputs vertically on phones */
+    }
+}
+/* 6. Mobile Responsiveness */
+@media (max-width: 768px) {
+    .ss-info-card { flex-direction: column; text-align: center; }
+    .time-controls { margin-top: 20px; }
+    .top-bar { padding: 10px 20px; }
+    .division { font-size: 1.1rem; }
+}
+@media (max-width: 768px) {
+    /* Stack the header logo and text */
+    .top-bar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header-left {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .brand-text {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    /* Stack the info card elements */
+    .ss-info-card {
+        flex-direction: column;
+        padding: 20px;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .time-controls {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    /* Make buttons easier to tap on mobile */
+    .button-group {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .time-btn {
+        flex: 1; /* Buttons grow to fill space */
+        margin: 0 5px;
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+
+    .table-card {
+        padding: 15px; /* Reduce padding to give table more room */
+    }
+
+    .mytable th, .mytable td {
+        padding: 10px 8px;
+        font-size: 12px; /* Smaller font for mobile tables */
+    }
+}
+
+/* Extra small devices (Phones under 480px) */
+@media (max-width: 480px) {
+    .division { font-size: 1rem; }
+    #ss-name-display { font-size: 1.2rem; }
+    
+    .logout-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

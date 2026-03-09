@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GETCO Portal | Login</title>
+    <link rel="icon" type="image/png" href="images/Logo_GETCO.png">
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="bg-circle-1"></div>
+        <div class="bg-circle-2"></div>
+
+        <div class="login-card">
+            <div class="card-header">
+                <img src="images/Logo_GETCO.png" alt="GETCO Logo" class="login-logo">
+                <h1>Amreli</h1>
+                <p>Transmission Division Portal</p>
+            </div>
+
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="text" id="username" required>
+                    <label>Username</label>
+                    <div class="bar"></div>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" id="password" required>
+                    <label>Password</label>
+                    <div class="bar"></div>
+                </div>
+
+                <button class="login-btn" onclick="handleLogin()">
+                    <span>Sign In</span>
+                    <div class="btn-hover-effect"></div>
+                </button>
+            </div>
+
+            <div class="card-footer">
+                <p>Gujarat Energy Transmission Co. Ltd.</p>
+                <span>Government of Gujarat (U/T)</span>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script/login.js"></script>
+</body>
+</html>

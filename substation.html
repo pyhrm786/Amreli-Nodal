@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GETCO | Substation Dashboard</title>
+        <link rel="stylesheet" href="styles/substation.css">
+        <link rel="icon" type="image/png" href="images/Logo_GETCO.png">
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+        <header class="top-bar">
+            <div class="header-left">
+                <img class="logo" src="images/Logo_GETCO.png" onclick="window.location.href = 'login.html'">
+                <div class="brand-text">
+                    <span class="division">Amreli Transmission Division</span>
+                    <span class="company">Gujarat Energy Transmission Co. Ltd.</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+            </div>
+        </header>
+
+        <main class="dashboard-container">
+            <section class="ss-info-card">
+                <div class="ss-identity">
+                    <span class="label">SUBSTATION</span>
+                    <h2 id="ss-name-display">Loading Substation Name...</h2>
+                </div>
+            </section>
+
+            <section class="ss-info-card">
+                <div class="time-controls">
+                    <div class="date-input-wrapper">
+                        <label class="control-label">Report Date:</label>
+                        <input type="date" id="report-date" class="custom-date-picker">
+                    </div>
+                    <span class="control-label" style="padding-left: 30px;">Select Report Time:</span>
+                    <div class="button-group">
+                        <button class="time-btn" id="btn-19" onclick="detail19();">19:00 Hrs</button>
+                        <button class="time-btn" id="btn-24" onclick="detail24();">24:00 Hrs</button>
+                    </div>
+                </div>
+            </section>
+            <section class="table-card">
+                <div class="table-header">
+                    <h3>Load Report Details</h3>
+                    <div class="orange-divider"></div>
+                </div>
+                <div class="table-responsive">
+                    <section class="det19 t19">
+                        <table class="mytable t1">
+                            <thead>
+                                <tr>
+                                    <th>Feeder Name</th>
+                                    <th>Amps</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body19">
+                                <tr>
+                                    <td colspan="3" style="text-align:center; padding: 40px; color: #999;">
+                                        Please select a time slot to view data
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <table class="mytable t11">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Max</th>
+                                    <th>Time</th>
+                                    <th>Min</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body19">
+                                <tr>
+                                    <td>11kV Side</td>
+                                    <td><input type="text" id="11kv_maxv" placeholder="Max"></td>
+                                    <td><input type="text" id="11kv_maxt" placeholder="Time"></td>
+                                    <td><input type="text" id="11kv_minv" placeholder="Min"></td>
+                                    <td><input type="text" id="11kv_mint" placeholder="Time"></td>
+                                </tr>
+                                <tr>
+                                    <td>66kV Side</td>
+                                    <td><input type="text" id="66kv_maxv" placeholder="Max"></td>
+                                    <td><input type="text" id="66kv_maxt" placeholder="Time"></td>
+                                    <td><input type="text" id="66kv_minv" placeholder="Min"></td>
+                                    <td><input type="text" id="66kv_mint" placeholder="Time"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="t111 table-responsive">
+                            <div class="table-header">
+                                <h3>Capacitor Bank Details</h3>
+                                <div class="orange-divider"></div>
+                            </div>
+                        </div>
+                        <div class="submit-container">
+                            <button type="button" class="getco-btn-submit" id="submitReportBtn">
+                                <img src="images/submit.png">
+                                <span class="btn-text">Submit Report</span>
+                                <div class="btn-loader" id="btnLoader"></div>
+                            </button>
+                        </div>
+                    </section>
+                    
+                    
+                    <table class="mytable t24 t2">
+                        <thead>
+                            <tr>
+                                <th>Feeder Name</th>
+                                <th>MWH</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body24">
+                            <tr>
+                                <td colspan="2" style="text-align:center; padding: 40px; color: #999;">
+                                    Please select a time slot to view data
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="t22 t24 table-responsive">
+                        <section class="line-details-card">
+                            <div class="table-header">
+                                <h3>Transmission Line Readings</h3>
+                                <div class="orange-divider"></div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="line-table">
+                                    <tbody id="line-details-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <div class="submit-container">
+                            <button type="button" class="getco-btn-submit" id="submitReportBtn">
+                                <img src="images/submit.png">
+                                <span class="btn-text">Submit Report</span>
+                                <div class="btn-loader" id="btnLoader"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script src="script/substation.js"></script>
+    </body>
+</html>
