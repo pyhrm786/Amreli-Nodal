@@ -35,13 +35,15 @@ function addSubstation(){
 
     console.log(ssName, ssId, userName, passWord);
 
-    let newuser = {
-        substation_name: ssName,
-        substation_id: ssId,
-        username: userName,
-        password: passWord
+    if (ssName && ssId && userName && passWord){
+        let newuser = {
+            substation_name: ssName,
+            substation_id: ssId,
+            username: userName,
+            password: passWord
+        }
+        addUser(newuser);
     }
-    addUser(newuser);
 }
 
 function expandadss(){
