@@ -77,16 +77,21 @@
         <section class="admin-card table-card">
             <div class="card-title">Database Management</div>
             <div class="tabs">
-                <button class="tab-btn active" onclick="showTab('ss')">Substations</button>
-                <button class="tab-btn" onclick="showTab('feeders')">Feeders</button>
+                <button class="tab-btn active" id="g1" onclick="showTabss()">Substations</button>
+                <button class="tab-btn" id="g2" onclick="showTabfed()">Feeders</button>
+                <div class="d1 off" id="d1">
+                    <select id="ss-dropdown2" class="drop">
+                    </select>
+                    <button class="show" onclick="showselected();">Show</button>
+                </div>
             </div>
 
             <div class="table-container">
                 <table id="mgmt-table">
                     <thead>
-                        </thead>
+                    </thead>
                     <tbody id="mgmt-body">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </section>

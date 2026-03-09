@@ -147,10 +147,54 @@ td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
 .delete-btn {
     background: none; border: 1px solid var(--danger);
     color: var(--danger); padding: 4px 10px;
-    border-radius: 4px; cursor: pointer; transition: 0.3s;
+    border-radius: 4px; cursor: pointer; transition: 0.25s;
 }
 
 .delete-btn:hover { background: var(--danger); color: white; }
+
+.delete-btn:active {
+    transform: translateY(1px);
+}
+
+.drop{
+    padding: 10px 0;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    transition: var(--transition);
+}
+
+.d1{
+    display: flex;
+    justify-content: center;
+}
+.off{
+    display: none;
+}
+
+.show {
+    background: none; border: 1px solid blue;
+    color: blue; padding: 10px;
+    background-color: skyblue;
+    border-radius: 4px; cursor: pointer; transition: 0.25s;
+    margin-left: 30px;
+}
+
+.show:hover { background: rgb(0, 0, 122); color: white; }
+
+.show:active {
+    transform: translateY(1px);
+}
+@media (max-width: 600px) {
+    .delete-btn .text {
+        display: none;
+    }
+    .delete-btn {
+        padding: 6px 8px;
+    }
+}
 
 @media (max-width: 992px) {
     .form-grid {

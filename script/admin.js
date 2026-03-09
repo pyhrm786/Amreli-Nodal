@@ -5,16 +5,115 @@ const supabaseClient = supabase.createClient(_supabaseUrl, _supabaseKey);
 let x1 = false;
 let x2 = false;
 
+let t1 = true;
+let t2 = false;
+
+let datass = [];
+
 getAllSubstations().then(data =>{
     let ssoptions = document.getElementById('ss-dropdown');
     ssoptions.innerHTML = '';
+    let ssoptions2 = document.getElementById('ss-dropdown2');
+    ssoptions2.innerHTML = '';
     data.forEach(ss_name => {
         let newoption = document.createElement('option');
-        newoption.innerHTML = ss_name;
-        newoption.setAttribute('value', ss_name);
+        newoption.innerHTML = ss_name.substation_name;
+        newoption.setAttribute('value', ss_name.substation_name);
         ssoptions.appendChild(newoption);
     });
+    data.forEach(ss_name => {
+        let newoption = document.createElement('option');
+        newoption.innerHTML = ss_name.substation_name;
+        newoption.setAttribute('value', ss_name.substation_name);
+        ssoptions2.appendChild(newoption);
+    });
+    datass = data;
 });
+
+function showTabss(){
+    let ssbutton = document.getElementById('g1');
+    let feederbutton = document.getElementById('g2');
+    let selects = document.getElementById('d1');
+
+    if(t1 == false){
+        selects.classList.add('off');
+        feederbutton.classList.remove('active');
+        ssbutton.classList.add('active');
+        t1 = true;
+        t2 = false;
+    }
+    
+    let tabless = document.getElementById('mgmt-table');
+    tabless.innerHTML = `<th>Sr No.</th>
+        <th>Substation Name</th>
+        <th>Substation ID</th>
+        <th>Action</th>
+    `;
+    let i = 1;
+    datass.forEach(ssdet =>{
+        let row = document.createElement('tr');
+        row.innerHTML = `<td>${i}</td>
+            <td>${ssdet.substation_name}</td>
+            <td>${ssdet.substation_id}</td>
+            <td><button class='delete-btn' onclick='deletess("${ssdet.substation_name}")'>Delete</button></td>
+        `;
+        i++;
+        tabless.appendChild(row);
+    });
+}
+
+function showTabfed(){
+    let ssbutton = document.getElementById('g1');
+    let feederbutton = document.getElementById('g2');
+    let selects = document.getElementById('d1');
+
+    if(t2 == false){
+        selects.classList.remove('off');
+        feederbutton.classList.add('active');
+        ssbutton.classList.remove('active');
+        t1 = false;
+        t2 = true;
+        let tabless = document.getElementById('mgmt-table');
+        tabless.innerHTML = '';
+    }
+}
+
+async function feeds(subsName) {
+    const { data, error } = await supabaseClient.from('feeders').select('*').eq('substation_name', subsName);
+    if (error){
+        console.log('error occured while loading feeders');
+    } else{
+        return data;
+    }
+}
+
+function showselected(){
+    let subsName = document.getElementById('ss-dropdown2').value;
+    feeds(subsName).then(datafed=>{
+        let tabless = document.getElementById('mgmt-table');
+        tabless.innerHTML = `<th>Sr No.</th>
+            <th>Substation Name</th>
+            <th>Feeder Name</th>
+            <th>Feeder Type</th>
+            <th>Feeder Group</th>
+            <th>Action</th>
+        `;
+        let i = 1;
+
+        datafed.forEach(det =>{
+            let row = document.createElement('tr');
+            row.innerHTML = `<td>${i}</td>
+                <td>${det.substation_name}</td>
+                <td>${det.feeder_name}</td>
+                <td>${det.feeder_type}</td>
+                <td>${det.feeder_group}</td>
+                <td><button class='delete-btn' onclick='deletefed("${det.substation_name}","${det.feeder_name}")'>Delete</button></td>
+            `;
+            i++;
+            tabless.appendChild(row);
+        });
+    });
+}
 
 async function addUser(newuser) {
     const {data, error} = await supabaseClient.from('users').insert([newuser]);
@@ -79,13 +178,12 @@ function expandadfeeder(){
 async function getAllSubstations() {
     const { data, error } = await supabaseClient
         .from('users')
-        .select('substation_name');
+        .select('substation_name, substation_id');
     if (error) {
         console.error('Error fetching substations:', error.message);
         return;
     }
-    const namesOnly = data.map(item => item.substation_name);
-    return namesOnly;
+    return data;
 }
 
 function addFeeder(){
@@ -120,19 +218,39 @@ async function load_feeder(new_feeder) {
     }
 }
 
-/*
-async function deleterow(rowid){
-    const {data, error}= await supabaseClient.from('users').delete().eq('substation_id',rowid);
-    if (error) {
-        console.error('Error deleting:', error.message);
-    } else {
-        console.log('Row deleted successfully');
+async function getallFeeders() {
+    const { data, error } = await supabaseClient.
+        from('feeders').
+        select('substation_name, feeder_name, feeder_type, feeder_group');
+    if (error){
+        console.log('Error occured while loading feeders');
+    } else{
+        return data;
     }
 }
 
-function deleted(ssId){
-    deleterow(ssId);
-    let tableBody = document.getElementById('mgmt-table');
-    let rowDel = document.querySelector(`.a${ssId}`);
-    tableBody.removeChild(rowDel);
-}*/
+function deletess(ss){
+    deleterow(ss);
+}
+
+async function deleterow(ss){
+    const {data, error}= await supabaseClient.from('users').delete().eq('substation_name',ss);
+    if (error) {
+        console.error('Error deleting:', error.message);
+    } else {
+        alert('Substation deleted successfully');
+    }
+}
+
+function deletefed(ss,feeder){
+    deletefeeder(ss,feeder);
+}
+
+async function deletefeeder(ss,feeder) {
+    const {data, error}= await supabaseClient.from('feeders').delete().eq('substation_name',ss).eq('feeder_name',feeder);
+    if (error) {
+        console.error('Error deleting:', error.message);
+    } else {
+        alert('Feeder deleted successfully');
+    }
+}
