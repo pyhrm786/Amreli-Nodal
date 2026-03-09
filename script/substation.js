@@ -8,8 +8,11 @@ let button24 = true;
 let ssname = document.getElementById('ss-name-display');
 let substationName = JSON.parse(localStorage.getItem('logged_in_user')).substation_name;
 ssname.innerHTML = substationName;
-
+let feedersdata = [];
+let capbankdata = [];
+let linedata = [];
 getallfeedernames(substationName).then(data =>{
+    feedersdata = data;
     let table19 = document.querySelector('.t1');
     table19.innerHTML = `<thead>
                             <tr>
@@ -93,6 +96,7 @@ getallfeedernames(substationName).then(data =>{
     table24.appendChild(new_feeder_row1);
 });
 getallcapbank(substationName).then(data =>{
+    capbankdata = data;
     count = 1;
     let capabankdet = document.querySelector('.t111');
     data.forEach(caps => {
@@ -130,7 +134,7 @@ getallcapbank(substationName).then(data =>{
     });
 });
 getalllinenames(substationName).then(data =>{
-    console.log(data);
+    linedata = data;
     let linetable = document.getElementById('line-details-body');
     count = 1;
     data.forEach(line => {
@@ -220,4 +224,101 @@ function detail24(){
     }
     button24 = false;
     button19 = false;
+}
+function submit19(){
+    let newssname = substationName;
+    let date = document.getElementById('report-date').value;
+
+    let kv11maxv = document.getElementById('kv11_maxv').value;
+    let kv11maxt = document.getElementById('kv11_maxt').value;
+    let kv11minv = document.getElementById('kv11_minv').value;
+    let kv11mint = document.getElementById('kv11_mint').value;
+    let kv66maxv = document.getElementById('kv66_maxv').value;
+    let kv66maxt = document.getElementById('kv66_maxt').value;
+    let kv66minv = document.getElementById('kv66_minv').value;
+    let kv66mint = document.getElementById('kv66_mint').value;
+    if(kv11maxv && kv11maxt && kv11minv && kv11mint && kv66maxv && kv66maxt && kv66minv && kv66mint){
+        let voltage = {
+            'date' : date,
+            'substation_name' : newssname,
+            'kv11_max' : kv11maxv,
+            'kv11_max_time' : kv11maxt,
+            'kv11_min' : kv11minv,
+            'kv11_min_time' : kv11mint,
+            'kv66_max' : kv66maxv,
+            'kv66_max_time' : kv66maxt,
+            'kv66_min' : kv66minv,
+            'kv66_min_time' : kv66mint
+        }
+        loadvoltage(voltage);
+
+        let loading_feeder = [];
+        let count = 1;
+        feedersdata.forEach(feeder=>{
+            let max_amp = document.querySelector(`.amp_feeder${count}`).value;
+            let time = document.querySelector(`.time_feeder${count}`).value;
+            let feederName = feeder.feeder_name;
+
+            loading_feeder.push({
+                'date' : date,
+                'substation_name' : newssname,
+                'feeder_name' : feederName,
+                'max_amp' : max_amp,
+                'time' : time
+            });
+            count++;
+        });
+        loadlmu19(loading_feeder);
+
+        count = 1;
+        let caparray = [];
+        capbankdata.forEach(bank=>{
+            let caphrs = document.querySelector(`.cap_hrs_${count}`).value;
+            let capmin = document.querySelector(`.cap_min_${count}`).value;
+            let amps = document.querySelector(`.cap_max_amp${count}`).value;
+            let tap = document.querySelector(`.tap${count}`).value;
+
+            if (caphrs && amps && tap){
+                caparray.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'capacitor_bank' : bank.capacitor_bank,
+                    'hours' : caphrs,
+                    'minutes' : capmin,
+                    'max_amp' : amps,
+                    'tap' : tap
+                })
+            }
+            count++;
+        });
+        if (caparray.length>0){
+            loadcap(caparray);
+        }
+    } else{
+        alert('Voltage data entry is compulsory...!!!');
+    }
+}
+async function loadlmu19(array) {
+    const { data, error } = await supabaseClient.from('lmudet19hrs').insert(array);
+    if (error){
+        console.log('Error occured uploading data of lmu 19hrs detail');
+    } else{
+        console.log('LMU 19hrs detail is uploaded successfuly');
+    }
+}
+async function loadvoltage(array) {
+    const { data, error } = await supabaseClient.from('voltdet19hrs').insert(array);
+    if (error){
+        console.log('Error occured uploading data of lmu 19hrs detail');
+    } else{
+        console.log('LMU 19hrs detail is uploaded successfuly');
+    }
+}
+async function loadcap(array) {
+    const { data, error} = await supabaseClient.from('capdet19hrs').insert(array);
+    if (error){
+        console.log('error while uploading capacitor data');
+    } else{
+        console.log('capacitor data uploaded successfuly');
+    }
 }
