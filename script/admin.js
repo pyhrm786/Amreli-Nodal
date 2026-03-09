@@ -90,15 +90,19 @@ function addFeeder(){
     let feeder_tp = document.getElementById('new-feeder-type').value;
     let feeder_grp = document.getElementById('new-feeder-group').value;
 
-    let new_feeder = {
-        substation_name: ss_nm,
-        feeder_name: feeder_nm,
-        feeder_type: feeder_tp,
-        feeder_group: feeder_grp
-    };
+    if (feeder_nm && feeder_tp && feeder_grp){
+        let new_feeder = {
+            substation_name: ss_nm,
+            feeder_name: feeder_nm,
+            feeder_type: feeder_tp,
+            feeder_group: feeder_grp
+        };
 
-    console.log(new_feeder);
-    load_feeder(new_feeder);
+        console.log(new_feeder);
+        load_feeder(new_feeder);
+    } else{
+        alert('Please Enter All Details');
+    }
 }
 
 async function load_feeder(new_feeder) {
