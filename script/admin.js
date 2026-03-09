@@ -43,6 +43,8 @@ function addSubstation(){
             password: passWord
         }
         addUser(newuser);
+    } else{
+        alert('Enter all Details');
     }
 }
 
