@@ -97,7 +97,7 @@ body {
 
 /* When active, this class is added via JS */
 .generate-menu-content.open {
-    max-height: 400px; /* Large enough to fit content */
+    max-height: 400px;
     opacity: 1;
     padding: 20px;
 }
