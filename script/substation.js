@@ -226,6 +226,12 @@ function detail24(){
     button19 = false;
 }
 function submit19(){
+    let button = document.querySelector('.b1');
+    let buttontext = document.querySelector('.bb1');
+    button.disabled = true;
+    buttontext.style.opacity = '0.5';
+    buttontext.innerText = 'Submitting...';
+
     let newssname = substationName;
     let date = document.getElementById('report-date').value;
 
@@ -295,6 +301,7 @@ function submit19(){
             loadcap(caparray);
         }
         alert('✅ data submitted successfully');
+        buttontext.innerText = 'Submitted';
     } else{
         alert('Voltage data entry is compulsory...!!!');
     }
@@ -324,6 +331,12 @@ async function loadcap(array) {
     }
 }
 function submit24(){
+    let button = document.querySelector('.b2');
+    let buttontext = document.querySelector('.bb2');
+    button.disabled = true;
+    buttontext.style.opacity = '0.5';
+    buttontext.innerText = 'Submitting...';
+
     let newssname = substationName;
     let date = document.getElementById('report-date').value;
     let count = 1;
@@ -375,6 +388,7 @@ function submit24(){
         loadlinedata(linedetail);
     }
     alert('✅ data submitted successfully');
+    buttontext.innerText = 'Submitted';
 }
 async function loadlmu24(array) {
     const { data, error } = await supabaseClient
