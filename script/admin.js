@@ -150,7 +150,6 @@ function addSubstation(){
 function expandadss(){
     let e1 = document.querySelector('.a1');
     let btn = document.querySelector('.addssbutton');
-    let arrow = document.getElementById('menu1');
     if (x1 == false){
         e1.classList.remove('f1');
         btn.innerHTML = '⇓ Add New Substation';
