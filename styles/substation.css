@@ -29,7 +29,7 @@ body {
 }
 
 .header-left { display: flex; align-items: center; }
-.logo { height: 55px; cursor: pointer; transition: 0.3s; }
+.logo { height: 55px; cursor: pointer; transition: 0.3s; border-radius: 10px;}
 .logo:hover { transform: scale(1.05); }
 
 .brand-text { margin-left: 20px; display: flex; flex-direction: column; }

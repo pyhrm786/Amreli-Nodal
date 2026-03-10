@@ -322,3 +322,75 @@ async function loadcap(array) {
         console.log('capacitor data uploaded successfuly');
     }
 }
+function submit24(){
+    let newssname = substationName;
+    let date = document.getElementById('report-date').value;
+    let count = 1;
+    let mwhdata = [];
+    feedersdata.forEach(feeder=>{
+        let mwh = document.querySelector(`.mwh_feeder${count}`).value;
+
+        mwhdata.push({
+            'date' : date,
+            'substation_name' : newssname,
+            'feeder_name' : feeder.feeder_name,
+            'sent_out' : mwh
+        });
+        count++
+    });
+    let stationmwh = document.querySelector(`.mwh_feeder${count}`).value;
+    mwhdata.push({
+        'date' : date,
+        'substation_name' : newssname,
+        'feeder_name' : 'Station',
+        'sent_out' : stationmwh
+    });
+    count++;
+    let lvtotal = document.querySelector(`.mwh_feeder${count}`).value;
+    mwhdata.push({
+        'date' : date,
+        'substation_name' : newssname,
+        'feeder_name' : 'LV Total',
+        'sent_out' : lvtotal
+    });
+
+    loadlmu24(mwhdata);
+    count = 1;
+    let linedetail = [];
+    linedata.forEach(line=>{
+        let imp = document.querySelector(`.line-import-${count}`).value;
+        let exp = document.querySelector(`.line-export-${count}`).value;
+
+        linedetail.push({
+            'date' : date,
+            'substation_name' : newssname,
+            'line_name' : line.line_name,
+            'import' : imp,
+            'export' : exp
+        });
+        count++;
+    });
+    if (linedetail.length>0){
+        loadlinedata(linedetail);
+    }
+}
+async function loadlmu24(array) {
+    const { data, error } = await supabaseClient
+        .from('lmudet24hrs')
+        .insert(array);
+    if (error){
+        console.log('Error occured while uploading LMU 24 Hrs detail.');
+    } else{
+        console.log('LMU 24Hrs data uploaded successfully.');
+    }
+}
+async function loadlinedata(array) {
+    const { data, error } = await supabaseClient
+        .from('linedet24hrs')
+        .insert(array);
+    if (error){
+        console.log('Error occured while uploading line data');
+    } else{
+        console.log('Line data uploaded successfully');
+    }
+}
