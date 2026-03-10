@@ -294,6 +294,7 @@ function submit19(){
         if (caparray.length>0){
             loadcap(caparray);
         }
+        alert('✅ data submitted successfully');
     } else{
         alert('Voltage data entry is compulsory...!!!');
     }
@@ -373,6 +374,7 @@ function submit24(){
     if (linedetail.length>0){
         loadlinedata(linedetail);
     }
+    alert('✅ data submitted successfully');
 }
 async function loadlmu24(array) {
     const { data, error } = await supabaseClient
