@@ -51,6 +51,107 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* Container */
+.generate-wrapper {
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+/* The Trigger Button (Orange) */
+.generate-unfold-btn {
+    width: 100%;
+    background-color: var(--orange);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.generate-unfold-btn:hover {
+    background-color: var(--orange-dark);
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+/* The Slide-Down Menu (Navy Theme) */
+.generate-menu-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, opacity 0.3s;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    opacity: 0;
+}
+
+/* When active, this class is added via JS */
+.generate-menu-content.open {
+    max-height: 400px; /* Large enough to fit content */
+    opacity: 1;
+    padding: 20px;
+}
+
+/* Internal Layout */
+.menu-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.date-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.date-section label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.menu-date-input {
+    padding: 8px;
+    border: 2px solid var(--navy);
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+/* Grid for the 4 Report Buttons */
+.report-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two buttons per row */
+    gap: 10px;
+}
+
+.report-btn {
+    background: white;
+    color: var(--navy);
+    border: 1px solid var(--navy);
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.report-btn:hover {
+    background: var(--navy);
+    color: white;
+}
+
 /* 4. Input & Select Styling */
 .input-group { position: relative; margin-bottom: 25px; }
 .input-group input, .input-group select {

@@ -150,13 +150,14 @@ function addSubstation(){
 function expandadss(){
     let e1 = document.querySelector('.a1');
     let btn = document.querySelector('.addssbutton');
+    let arrow = document.getElementById('menu1');
     if (x1 == false){
         e1.classList.remove('f1');
-        btn.innerHTML = '&#8595 Add New Substation';
+        btn.innerHTML = '⇓ Add New Substation';
         x1 = true;
     } else if (x1 == true){
         e1.classList.add('f1');
-        btn.innerHTML = '&#8594 Add New Substation';
+        btn.innerHTML = '⇒ Add New Substation';
         x1 = false;
     }
 }
@@ -166,11 +167,11 @@ function expandadfeeder(){
     let btn = document.querySelector('.addfeederbutton');
     if (x2 == false){
         e2.classList.remove('f2');
-        btn.innerHTML = '&#8595 Add New Feeder';
+        btn.innerHTML = '⇓ Add New Feeder';
         x2 = true;
     } else if (x2 == true){
         e2.classList.add('f2');
-        btn.innerHTML = '&#8594 Add New Feeder';
+        btn.innerHTML = '⇒ Add New Feeder';
         x2 = false;
     }
 }
@@ -253,4 +254,81 @@ async function deletefeeder(ss,feeder) {
     } else {
         alert('Feeder deleted successfully');
     }
+}
+
+function toggleGenerateMenu() {
+    const menu = document.getElementById('gen-menu');
+    const arrow = document.getElementById('menu-arrow');
+    
+    menu.classList.toggle('open');
+    
+    if (menu.classList.contains('open')) {
+        arrow.style.transform = 'rotate(180deg)';
+    } else {
+        arrow.style.transform = 'rotate(0deg)';
+    }
+}
+
+function exportData(report){
+    let date = document.getElementById('gen-date').value;
+
+    if(report == 'lmu'){
+        downloadlmu(date);
+    } else if(report == 'voltage'){
+        downloadvoltage(date);
+    } else if(report == 'capacitor'){
+        downloadcapacitor(date);
+    } else if(report == 'line'){
+        downloadline(date);
+    }
+}
+async function downloadlmu(date) {
+    const { data, error } = await supabase
+        .from('lmudet19hrs')
+        .select('*')
+        .eq('date',date);
+
+    if (error) {
+        alert("Error fetching data for export");
+        return;
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "LMU_Report_19");
+
+    const { data1, error1 } = await supabase
+        .from('lmudet24hrs')
+        .select('*')
+        .eq('date',date);
+
+    if (error1) {
+        alert("Error fetching data for export");
+        return;
+    }
+
+    const worksheet1 = XLSX.utils.json_to_sheet(data1);
+
+    XLSX.utils.book_append_sheet(workbook, worksheet1, "LMU_Report_24");
+
+    XLSX.writeFile(workbook, `LMU_Amreli_Report_${date}.xlsx`);
+}
+async function downloadvoltage(date) {
+    const { data, error } = await supabase
+        .from('voltdet19hrs')
+        .select('*')
+        .eq('date',date);
+
+    if (error) {
+        alert("Error fetching data for export");
+        return;
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Voltage_Report");
+
+    XLSX.writeFile(workbook, `Volatge_Amreli_Report_${date}.xlsx`);
 }
