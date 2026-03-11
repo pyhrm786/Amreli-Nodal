@@ -61,7 +61,6 @@ function showTabss(){
         tabless.appendChild(row);
     });
 }
-
 function showTabfed(){
     let ssbutton = document.getElementById('g1');
     let feederbutton = document.getElementById('g2');
@@ -77,7 +76,6 @@ function showTabfed(){
         tabless.innerHTML = '';
     }
 }
-
 async function feeds(subsName) {
     const { data, error } = await supabaseClient.from('feeders').select('*').eq('substation_name', subsName);
     if (error){
@@ -86,7 +84,6 @@ async function feeds(subsName) {
         return data;
     }
 }
-
 function showselected(){
     let subsName = document.getElementById('ss-dropdown2').value;
     feeds(subsName).then(datafed=>{
@@ -114,7 +111,6 @@ function showselected(){
         });
     });
 }
-
 async function addUser(newuser) {
     const {data, error} = await supabaseClient.from('users').insert([newuser]);
     if(error){
@@ -125,7 +121,6 @@ async function addUser(newuser) {
         alert('Added Successfully');
     }
 }
-
 function addSubstation(){
     const ssName = document.getElementById('new-ss-name').value;
     const ssId = document.getElementById('new-ss-id').value;
@@ -146,7 +141,6 @@ function addSubstation(){
         alert('Enter all Details');
     }
 }
-
 function expandadss(){
     let e1 = document.querySelector('.a1');
     let btn = document.querySelector('.addssbutton');
@@ -160,7 +154,6 @@ function expandadss(){
         x1 = false;
     }
 }
-
 function expandadfeeder(){
     let e2 = document.querySelector('.a2');
     let btn = document.querySelector('.addfeederbutton');
@@ -174,7 +167,6 @@ function expandadfeeder(){
         x2 = false;
     }
 }
-
 async function getAllSubstations() {
     const { data, error } = await supabaseClient
         .from('users')
@@ -185,7 +177,6 @@ async function getAllSubstations() {
     }
     return data;
 }
-
 function addFeeder(){
     let ss_nm = document.getElementById('ss-dropdown').value;
     let feeder_nm = document.getElementById('new-feeder-name').value;
@@ -206,7 +197,6 @@ function addFeeder(){
         alert('Please Enter All Details');
     }
 }
-
 async function load_feeder(new_feeder) {
     const {data, error} = await supabaseClient.from('feeders').insert([new_feeder]);
     if(error){
@@ -217,7 +207,6 @@ async function load_feeder(new_feeder) {
         alert('New Feeder Added Successfully');
     }
 }
-
 async function getallFeeders() {
     const { data, error } = await supabaseClient.
         from('feeders').
@@ -228,11 +217,9 @@ async function getallFeeders() {
         return data;
     }
 }
-
 function deletess(ss){
     deleterow(ss);
 }
-
 async function deleterow(ss){
     const {data, error}= await supabaseClient.from('users').delete().eq('substation_name',ss);
     if (error) {
@@ -241,11 +228,9 @@ async function deleterow(ss){
         alert('Substation deleted successfully');
     }
 }
-
 function deletefed(ss,feeder){
     deletefeeder(ss,feeder);
 }
-
 async function deletefeeder(ss,feeder) {
     const {data, error}= await supabaseClient.from('feeders').delete().eq('substation_name',ss).eq('feeder_name',feeder);
     if (error) {
@@ -254,7 +239,6 @@ async function deletefeeder(ss,feeder) {
         alert('Feeder deleted successfully');
     }
 }
-
 function toggleGenerateMenu() {
     const menu = document.getElementById('gen-menu');
     const arrow = document.getElementById('menu-arrow');
@@ -267,7 +251,6 @@ function toggleGenerateMenu() {
         arrow.style.transform = 'rotate(0deg)';
     }
 }
-
 function exportData(report){
     let date = document.getElementById('gen-date').value;
 
@@ -282,39 +265,37 @@ function exportData(report){
     }
 }
 async function downloadlmu(date) {
-    const { data, error } = await supabase
+    let newdata = [];
+    const { data, error } = await supabaseClient
         .from('lmudet19hrs')
         .select('*')
         .eq('date',date);
+    newdata = data;
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "LMU19_Report");
 
     if (error) {
         alert("Error fetching data for export");
         return;
+    } else{
+        const { data, error } = await supabaseClient
+            .from('lmudet24hrs')
+            .select('*')
+            .eq('date',date);
+
+        if (error) {
+            alert("Error fetching data for export");
+            return;
+        } else {
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            XLSX.utils.book_append_sheet(workbook, worksheet, "LMU24_Report");
+        }
     }
-
-    const worksheet = XLSX.utils.json_to_sheet(data);
-
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "LMU_Report_19");
-
-    const { data1, error1 } = await supabase
-        .from('lmudet24hrs')
-        .select('*')
-        .eq('date',date);
-
-    if (error1) {
-        alert("Error fetching data for export");
-        return;
-    }
-
-    const worksheet1 = XLSX.utils.json_to_sheet(data1);
-
-    XLSX.utils.book_append_sheet(workbook, worksheet1, "LMU_Report_24");
-
     XLSX.writeFile(workbook, `LMU_Amreli_Report_${date}.xlsx`);
 }
 async function downloadvoltage(date) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('voltdet19hrs')
         .select('*')
         .eq('date',date);
@@ -322,12 +303,46 @@ async function downloadvoltage(date) {
     if (error) {
         alert("Error fetching data for export");
         return;
+    } else{
+        const worksheet = XLSX.utils.json_to_sheet(data);
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Voltage_Report");
+
+        XLSX.writeFile(workbook, `Volatge_Amreli_Report_${date}.xlsx`);
     }
+}
+async function downloadcapacitor(date) {
+    const { data, error } = await supabaseClient
+        .from('capdet19hrs')
+        .select('*')
+        .eq('date',date);
+    if (error) {
+        alert("Error fetching data for export");
+        return;
+    } else {
+        const worksheet = XLSX.utils.json_to_sheet(data);
 
-    const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Capacitor_Report");
 
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Voltage_Report");
+        XLSX.writeFile(workbook, `Capacitor_Amreli_Report_${date}.xlsx`);
+    }
+}
+async function downloadline(date) {
+    const { data, error } = await supabaseClient
+        .from('linedet24hrs')
+        .select('*')
+        .eq('date',date);
+    if (error) {
+        alert("Error fetching data for export");
+        return;
+    } else {
+        const worksheet = XLSX.utils.json_to_sheet(data);
 
-    XLSX.writeFile(workbook, `Volatge_Amreli_Report_${date}.xlsx`);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Line_Report");
+
+        XLSX.writeFile(workbook, `Line_Amreli_Report_${date}.xlsx`);
+    }
 }
