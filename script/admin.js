@@ -346,3 +346,46 @@ async function downloadline(date) {
         XLSX.writeFile(workbook, `Line_Amreli_Report_${date}.xlsx`);
     }
 }
+async function check19(date) {
+    const { data, error } = await supabaseClient
+        .from('voltdet19hrs')
+        .select('substation_name')
+        .eq('date',date)
+    if(error){
+        console.log('Error Occured while checking 19Hrs');
+    } else{
+        return data;
+    }
+}
+function getstatus(){
+    let date = document.getElementById('gen-date').value;
+    check19(date).then(ss_done=>{
+        ss19_done_names = ss_done.map(ss=>ss.substation_name);
+        let statusTable = document.querySelector('.status-table');
+        statusTable.innerHTML = `
+            <tr>
+                <th>Substation Name</th>
+                <th>19Hrs</th>
+                <th>24Hrs</th>
+            </tr>
+        `;
+        datass.forEach(ss=>{
+            let ss_row = document.createElement('tr');
+            let ss_name_td = document.createElement('td');
+            ss_name_td.innerHTML = ss.substation_name;
+            ss_row.appendChild(ss_name_td);
+            let ss_19_td = document.createElement('td');
+            if(ss19_done_names.includes(ss.substation_name)){
+                ss_19_td.innerHTML = `&#128994`;
+            } else{
+                ss_19_td.innerHTML = `&#128308`;
+            }
+            ss_row.appendChild(ss_19_td);
+            let ss_24_td = document.createElement('td');
+            ss_24_td.innerHTML = '';
+            ss_row.appendChild(ss_24_td);
+
+            statusTable.appendChild(ss_row);
+        });
+    });
+}
