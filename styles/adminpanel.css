@@ -226,7 +226,7 @@ body {
 
 .logout-btn:hover { background: var(--orange); color: white; }
 
-.addssbutton, .addfeederbutton{
+.addssbutton, .addfeederbutton, .addcapacitorbutton, .addlinebutton{
     border: none;
     background-color: var(--orange-dark);
     color: #001f3f;
@@ -234,7 +234,7 @@ body {
     border-radius: 20px;
     transition: background-color 0.3s, color 0.3s;
 }
-.addssbutton:hover, .addfeederbutton:hover{
+.addssbutton:hover, .addfeederbutton:hover, .addcapacitorbutton:hover, .addlinebutton:hover{
     background-color: var(--orange-dark);
     color: white;
 }
@@ -243,7 +243,7 @@ body {
     margin-bottom: 20px;
 }
 
-.f1,.f2{
+.f1,.f2,.f3,.f4{
     display: none;
 }
 /* 6. Management Table */

@@ -4,6 +4,8 @@ const supabaseClient = supabase.createClient(_supabaseUrl, _supabaseKey);
 
 let x1 = false;
 let x2 = false;
+let x3 = false;
+let x4 = false;
 
 let t1 = true;
 let t2 = false;
@@ -15,6 +17,10 @@ getAllSubstations().then(data =>{
     ssoptions.innerHTML = '';
     let ssoptions2 = document.getElementById('ss-dropdown2');
     ssoptions2.innerHTML = '';
+    let ssoptions3 = document.getElementById('ss-dropdown3');
+    ssoptions3.innerHTML = '';
+    let ssoptions4 = document.getElementById('ss-dropdown4');
+    ssoptions4.innerHTML = '';
     data.forEach(ss_name => {
         let newoption = document.createElement('option');
         newoption.innerHTML = ss_name.substation_name;
@@ -26,6 +32,18 @@ getAllSubstations().then(data =>{
         newoption.innerHTML = ss_name.substation_name;
         newoption.setAttribute('value', ss_name.substation_name);
         ssoptions2.appendChild(newoption);
+    });
+    data.forEach(ss_name => {
+        let newoption = document.createElement('option');
+        newoption.innerHTML = ss_name.substation_name;
+        newoption.setAttribute('value', ss_name.substation_name);
+        ssoptions3.appendChild(newoption);
+    });
+    data.forEach(ss_name => {
+        let newoption = document.createElement('option');
+        newoption.innerHTML = ss_name.substation_name;
+        newoption.setAttribute('value', ss_name.substation_name);
+        ssoptions4.appendChild(newoption);
     });
     datass = data;
 });
@@ -165,6 +183,86 @@ function expandadfeeder(){
         e2.classList.add('f2');
         btn.innerHTML = '⇒ Add New Feeder';
         x2 = false;
+    }
+}
+function expandcap(){
+    let e3 = document.querySelector('.a3');
+    let btn = document.querySelector('.addcapacitorbutton');
+    if (x3 == false){
+        e3.classList.remove('f3');
+        btn.innerHTML = '⇓ Add New Capacitor Bank';
+        x3 = true;
+    } else if (x3 == true){
+        e3.classList.add('f3');
+        btn.innerHTML = '⇒ Add New Capacitor Bank';
+        x3 = false;
+    }
+}
+function expandline(){
+    let e4 = document.querySelector('.a4');
+    let btn = document.querySelector('.addlinebutton');
+    if (x4 == false){
+        e4.classList.remove('f4');
+        btn.innerHTML = '⇓ Add New Line';
+        x4 = true;
+    } else if (x4 == true){
+        e4.classList.add('f4');
+        btn.innerHTML = '⇒ Add New Line';
+        x4 = false;
+    }
+}
+function addCapacitor(){
+    let ss_nm = document.getElementById('ss-dropdown3').value;
+    let cap_name = document.getElementById('new-capacitor-name').value;
+    let cap_capacity = document.getElementById('new-capacitor-capacity').value;
+
+    if (ss_nm && cap_name && cap_capacity){
+        let newcap = {
+            substation_name : ss_nm,
+            capacitor_bank : cap_name,
+            capacity : cap_capacity
+        }
+        console.log(newcap);
+        loadCapacitor(newcap);
+    } else{
+        alert('Please Enter All Details');
+    }
+}
+async function loadCapacitor(newcap) {
+    const { data, error } = await supabaseClient
+        .from('capacitorbanks')
+        .insert(newcap)
+    if (error){
+        console.log('Error Occured', error.message);
+    } else{
+        console.log('Success...!!!');
+        alert('New Capacitor Bank Added Successfully');
+    }
+}
+function addLine(){
+    let ss_nm = document.getElementById('ss-dropdown4').value;
+    let line_name = document.getElementById('new-line-name').value;
+
+    if (ss_nm && line_name){
+        let new_line = {
+            substation_name : ss_nm,
+            line_name : line_name
+        }
+        console.log(new_line);
+        loadLine(new_line);
+    } else{
+        alert('Please Enter All Details');
+    }
+}
+async function loadLine(new_line) {
+    const { data, error } = await supabaseClient
+        .from('linenames')
+        .insert(new_line);
+    if (error){
+        console.log('Error Occured', error.message);
+    } else{
+        console.log('Success...!!!');
+        alert('New Line Added Successfully');
     }
 }
 async function getAllSubstations() {
@@ -359,16 +457,16 @@ async function check19(date) {
 }
 function getstatus(){
     let date = document.getElementById('gen-date').value;
+    let statusTable = document.querySelector('.status-table');
+    statusTable.innerHTML = `
+        <tr>
+            <th>Substation Name</th>
+            <th>19Hrs</th>
+            <th>24Hrs</th>
+        </tr>
+    `;
     check19(date).then(ss_done=>{
         ss19_done_names = ss_done.map(ss=>ss.substation_name);
-        let statusTable = document.querySelector('.status-table');
-        statusTable.innerHTML = `
-            <tr>
-                <th>Substation Name</th>
-                <th>19Hrs</th>
-                <th>24Hrs</th>
-            </tr>
-        `;
         datass.forEach(ss=>{
             let ss_row = document.createElement('tr');
             let ss_name_td = document.createElement('td');

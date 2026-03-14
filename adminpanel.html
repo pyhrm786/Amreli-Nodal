@@ -108,6 +108,48 @@
             <button class="primary-btn" onclick="addFeeder()">Link New Feeder</button>
         </section>
 
+        <div class="form-grid">
+            <section class="addbutton">
+                <button class="addcapacitorbutton" onclick="expandcap();">⇒ Add New Capacitor Bank</button>
+            </section>
+        </div>
+        <section class="admin-card f3 a3">
+            <div class="card-title">Add New Capacitor Bank to Substation</div>
+            <div class="input-group">
+                <select id="ss-dropdown3">
+                    <option value="" disabled selected>Select Substation...</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-capacitor-name" required>
+                <label>Capacitor Bank Name</label>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-capacitor-capacity" required>
+                <label>Capacity</label>
+            </div>
+            <button class="primary-btn" onclick="addCapacitor()">Link New Capacitor Bank</button>
+        </section>
+
+        <div class="form-grid">
+            <section class="addbutton">
+                <button class="addlinebutton" onclick="expandline();">⇒ Add New Line</button>
+            </section>
+        </div>
+        <section class="admin-card f4 a4">
+            <div class="card-title">Add New Line to Substation</div>
+            <div class="input-group">
+                <select id="ss-dropdown4">
+                    <option value="" disabled selected>Select Substation...</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-line-name" required>
+                <label>Line Name</label>
+            </div>
+            <button class="primary-btn" onclick="addLine()">Link New Line</button>
+        </section>
+
         <section class="admin-card table-card">
             <div class="card-title">Database Management</div>
             <div class="tabs">
@@ -119,7 +161,6 @@
                     <button class="show" onclick="showselected();">Show</button>
                 </div>
             </div>
-
             <div class="table-container">
                 <table id="mgmt-table">
                     <thead>
