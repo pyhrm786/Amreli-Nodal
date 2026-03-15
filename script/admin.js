@@ -455,9 +455,22 @@ async function check19(date) {
         return data;
     }
 }
-function getstatus(){
+async function check24(date) {
+    const { data, error } = await supabaseClient
+        .from('lmudet24hrs')
+        .select('substation_name')
+        .eq('date',date)
+        .eq('feeder_name','LV Total')
+    if(error){
+        console.log('Error Occured while checking 24Hrs');
+    } else{
+        return data;
+    }
+}
+async function getstatus() {
     let date = document.getElementById('gen-date').value;
     let statusTable = document.querySelector('.status-table');
+
     statusTable.innerHTML = `
         <tr>
             <th>Substation Name</th>
@@ -465,25 +478,38 @@ function getstatus(){
             <th>24Hrs</th>
         </tr>
     `;
-    check19(date).then(ss_done=>{
-        ss19_done_names = ss_done.map(ss=>ss.substation_name);
-        datass.forEach(ss=>{
+
+    try {
+        const [data19, data24] = await Promise.all([
+            check19(date),
+            check24(date)
+        ]);
+
+        const ss_done19 = data19.map(ss => ss.substation_name);
+        const ss_done24 = data24.map(ss => ss.substation_name);
+        
+        let databb = datass.map(ss => ss.substation_name);
+        
+        databb.forEach(ss => {
             let ss_row = document.createElement('tr');
+            
             let ss_name_td = document.createElement('td');
-            ss_name_td.innerHTML = ss.substation_name;
+            ss_name_td.innerHTML = ss;
             ss_row.appendChild(ss_name_td);
+
             let ss_19_td = document.createElement('td');
-            if(ss19_done_names.includes(ss.substation_name)){
-                ss_19_td.innerHTML = `&#128994`;
-            } else{
-                ss_19_td.innerHTML = `&#128308`;
-            }
+            ss_19_td.innerHTML = ss_done19.includes(ss) ? '🟢' : '🔴';
             ss_row.appendChild(ss_19_td);
+
             let ss_24_td = document.createElement('td');
-            ss_24_td.innerHTML = '';
+            ss_24_td.innerHTML = ss_done24.includes(ss) ? '🟢' : '🔴';
             ss_row.appendChild(ss_24_td);
 
             statusTable.appendChild(ss_row);
         });
-    });
+
+    } catch (error) {
+        console.error("Status check failed:", error);
+        alert("Could not load substation status.");
+    }
 }
