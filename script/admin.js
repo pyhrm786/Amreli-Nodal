@@ -363,34 +363,114 @@ function exportData(report){
     }
 }
 async function downloadlmu(date) {
-    let newdata = [];
-    const { data, error } = await supabaseClient
-        .from('lmudet19hrs')
-        .select('*')
-        .eq('date',date);
-    newdata = data;
-    const worksheet = XLSX.utils.json_to_sheet(data);
+    if (!date) { alert("Please select a date first."); return; }
+
+    const [res19, res24, resfeeder] = await Promise.all([
+        supabaseClient.from('lmudet19hrs').select('*').eq('date', date),
+        supabaseClient.from('lmudet24hrs').select('*').eq('date', date),
+        supabaseClient.from('feeders').select('*')
+    ]);
+
+    if (res19.error || res24.error) { alert("Error fetching data"); return; }
+
+    let table = document.getElementById('my-table');
+    let html = `
+        <tr>
+            <td>Substation Name</td>
+            <td>Feeder Name</td>
+            <td>Amp</td>
+            <td>Time</td>
+            <td>Sent Out</td>
+            <td>LV Total</td>
+        </tr>
+    `;
+    let mapstation = Object.fromEntries(res24.data.filter(d=>d.feeder_name == 'Station').map(d=>[d.substation_name, d]));
+    let maplv = Object.fromEntries(res24.data.filter(d=>d.feeder_name == 'LV Total').map(d=>[d.substation_name, d]));
+    const map19 = {};
+    res19.data.forEach(d => {
+        if (!map19[d.substation_name]) map19[d.substation_name] = {};
+        map19[d.substation_name][d.feeder_name] = d;
+    });
+    const map24 = {};
+    res24.data.forEach(d => {
+        if (!map24[d.substation_name]) map24[d.substation_name] = {};
+        map24[d.substation_name][d.feeder_name] = d;
+    });
+    const substations = [
+        "66kV Amreli-A SS",
+        "66kV Amreli-B SS",
+        "66kV Gavadka SS",
+        "66kV Simran SS",
+        "66kV Bagasara SS",
+        "66kV Kukavav SS",
+        "66kV Liliya SS",
+        "66kV Gundaran SS",
+        "66kV Chalala SS",
+        "66kV Sarambhada SS",
+        "66kV Lathi SS",
+        "66kV Jaliya SS",
+        "66kV Babra SS",
+        "66kV Malaviya Pipariya SS",
+        "66kV Gariyadhar SS",
+        "66kV Damnagar SS",
+        "66kV Chital SS",
+        "66kV Kotdapitha SS",
+        "66kV Khambhala SS",
+        "66kV Tori SS",
+        "66kV Lunidhar SS",
+        "66kV Virdi SS",
+        "66kV Mota Ankadiya SS",
+        "66kV Kuvargadh SS",
+        "66kV Hadala SS",
+        "66kV Nava Ujala SS",
+        "66kV Bhingrad SS",
+        "66kV Jarakhiya SS",
+        "66kV Charkha SS",
+        "66kV Ranuja SS",
+        "66kV Bhildi SS",
+        "66kV Chakkargadh SS",
+        "66kV Shekhpipariya SS",
+        "66kV Bhoringada SS",
+        "66kV Nana Machiyala SS",
+        "66kV Luvariya SS",
+        "66kV Suryapratapgadh SS",
+        "66kV Dahithara SS",
+        "66kV Ishwariya SS",
+        "66kV Kariyana SS"
+    ];
+    substations.forEach(ss=>{
+        const ssName = ss;
+        const feeders = resfeeder.data.filter(f => f.substation_name === ssName);
+        
+        feeders.forEach(feeder=>{
+            html += `
+                <tr>
+                    <td>${ssName}</td>
+                    <td>${feeder.feeder_name}</td>
+                    <td>${map19[ssName][feeder.feeder_name].max_amp}</td>
+                    <td>${map19[ssName][feeder.feeder_name].time}</td>
+                    <td>${map24[ssName][feeder.feeder_name].sent_out}</td>
+                    <td></td>
+                </tr>
+            `;
+        });
+        html += `
+            <tr>
+                <td>${ssName}</td>
+                <td>Station</td>
+                <td></td>
+                <td></td>
+                <td>${mapstation[ssName].sent_out}</td>
+                <td>${maplv[ssName].sent_out}</td>
+            </tr>
+        `;
+    });
+    table.innerHTML = html;
+
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "LMU19_Report");
-
-    if (error) {
-        alert("Error fetching data for export");
-        return;
-    } else{
-        const { data, error } = await supabaseClient
-            .from('lmudet24hrs')
-            .select('*')
-            .eq('date',date);
-
-        if (error) {
-            alert("Error fetching data for export");
-            return;
-        } else {
-            const worksheet = XLSX.utils.json_to_sheet(data);
-            XLSX.utils.book_append_sheet(workbook, worksheet, "LMU24_Report");
-        }
-    }
-    XLSX.writeFile(workbook, `LMU_Amreli_Report_${date}.xlsx`);
+    const worksheet = XLSX.utils.table_to_sheet(table);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, `LMU report ${date}.xlsx`);
 }
 async function downloadvoltage(date) {
     const { data, error } = await supabaseClient
