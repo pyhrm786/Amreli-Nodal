@@ -443,27 +443,56 @@ async function downloadlmu(date) {
         const feeders = resfeeder.data.filter(f => f.substation_name === ssName);
         
         feeders.forEach(feeder=>{
+            try{
+                data19max = map19[ssName][feeder.feeder_name].max_amp;
+                data19time = map19[ssName][feeder.feeder_name].time;
+                data24mwh = map24[ssName][feeder.feeder_name].sent_out;
+                html += `
+                    <tr>
+                        <td>${ssName}</td>
+                        <td>${feeder.feeder_name}</td>
+                        <td>${data19max}</td>
+                        <td>${data19time}</td>
+                        <td>${data24mwh}</td>
+                        <td></td>
+                    </tr>
+                `;
+            } catch(error){
+                html += `
+                    <tr>
+                        <td>${ssName}</td>
+                        <td>${feeder.feeder_name}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                `;
+            }
+        });
+        try{
             html += `
                 <tr>
                     <td>${ssName}</td>
-                    <td>${feeder.feeder_name}</td>
-                    <td>${map19[ssName][feeder.feeder_name].max_amp}</td>
-                    <td>${map19[ssName][feeder.feeder_name].time}</td>
-                    <td>${map24[ssName][feeder.feeder_name].sent_out}</td>
+                    <td>Station</td>
+                    <td></td>
+                    <td></td>
+                    <td>${mapstation[ssName].sent_out}</td>
+                    <td>${maplv[ssName].sent_out}</td>
+                </tr>
+            `;
+        } catch{
+            html += `
+                <tr>
+                    <td>${ssName}</td>
+                    <td>Station</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                 </tr>
             `;
-        });
-        html += `
-            <tr>
-                <td>${ssName}</td>
-                <td>Station</td>
-                <td></td>
-                <td></td>
-                <td>${mapstation[ssName].sent_out}</td>
-                <td>${maplv[ssName].sent_out}</td>
-            </tr>
-        `;
+        }
     });
     table.innerHTML = html;
 
@@ -473,6 +502,7 @@ async function downloadlmu(date) {
     XLSX.writeFile(workbook, `LMU report ${date}.xlsx`);
 }
 async function downloadvoltage(date) {
+    if (!date) { alert("Please select a date first."); return; }
     const { data, error } = await supabaseClient
         .from('voltdet19hrs')
         .select('*')
@@ -491,6 +521,7 @@ async function downloadvoltage(date) {
     }
 }
 async function downloadcapacitor(date) {
+    if (!date) { alert("Please select a date first."); return; }
     const { data, error } = await supabaseClient
         .from('capdet19hrs')
         .select('*')
@@ -508,6 +539,7 @@ async function downloadcapacitor(date) {
     }
 }
 async function downloadline(date) {
+    if (!date) { alert("Please select a date first."); return; }
     const { data, error } = await supabaseClient
         .from('linedet24hrs')
         .select('*')

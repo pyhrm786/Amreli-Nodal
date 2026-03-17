@@ -226,6 +226,8 @@ function detail24(){
     button19 = false;
 }
 function submit19(){
+    let date = document.getElementById('report-date').value;
+    if (!date) { alert("Please select a date first."); return; }
     let button = document.querySelector('.b1');
     let buttontext = document.querySelector('.bb1');
     button.disabled = true;
@@ -233,7 +235,6 @@ function submit19(){
     buttontext.innerText = 'Submitting...';
 
     let newssname = substationName;
-    let date = document.getElementById('report-date').value;
 
     let kv11maxv = document.getElementById('kv11_maxv').value;
     let kv11maxt = document.getElementById('kv11_maxt').value;
@@ -265,13 +266,21 @@ function submit19(){
             let time = document.querySelector(`.time_feeder${count}`).value;
             let feederName = feeder.feeder_name;
 
-            loading_feeder.push({
+            if(max_amp && time) {loading_feeder.push({
                 'date' : date,
                 'substation_name' : newssname,
                 'feeder_name' : feederName,
                 'max_amp' : max_amp,
                 'time' : time
+            });} else {
+                loading_feeder.push({
+                'date' : date,
+                'substation_name' : newssname,
+                'feeder_name' : feederName,
+                'max_amp' : '0',
+                'time' : '0'
             });
+            }
             count++;
         });
         loadlmu19(loading_feeder);
@@ -331,6 +340,8 @@ async function loadcap(array) {
     }
 }
 function submit24(){
+    let date = document.getElementById('report-date').value;
+    if (!date) { alert("Please select a date first."); return; }
     let button = document.querySelector('.b2');
     let buttontext = document.querySelector('.bb2');
     button.disabled = true;
@@ -338,19 +349,27 @@ function submit24(){
     buttontext.innerText = 'Submitting...';
 
     let newssname = substationName;
-    let date = document.getElementById('report-date').value;
     let count = 1;
     let mwhdata = [];
     feedersdata.forEach(feeder=>{
         let mwh = document.querySelector(`.mwh_feeder${count}`).value;
 
-        mwhdata.push({
-            'date' : date,
-            'substation_name' : newssname,
-            'feeder_name' : feeder.feeder_name,
-            'sent_out' : mwh
-        });
-        count++
+        if(mwh){
+            mwhdata.push({
+                'date' : date,
+                'substation_name' : newssname,
+                'feeder_name' : feeder.feeder_name,
+                'sent_out' : mwh
+            });
+        } else {
+            mwhdata.push({
+                'date' : date,
+                'substation_name' : newssname,
+                'feeder_name' : feeder.feeder_name,
+                'sent_out' : '0'
+            });
+        }
+        count++;
     });
     let stationmwh = document.querySelector(`.mwh_feeder${count}`).value;
     mwhdata.push({
@@ -375,13 +394,23 @@ function submit24(){
         let imp = document.querySelector(`.line-import-${count}`).value;
         let exp = document.querySelector(`.line-export-${count}`).value;
 
-        linedetail.push({
-            'date' : date,
-            'substation_name' : newssname,
-            'line_name' : line.line_name,
-            'import' : imp,
-            'export' : exp
-        });
+        if(imp && exp){
+            linedetail.push({
+                'date' : date,
+                'substation_name' : newssname,
+                'line_name' : line.line_name,
+                'import' : imp,
+                'export' : exp
+            });
+        } else {
+            linedetail.push({
+                'date' : date,
+                'substation_name' : newssname,
+                'line_name' : line.line_name,
+                'import' : '0',
+                'export' : '0'
+            });
+        }
         count++;
     });
     if (linedetail.length>0){
