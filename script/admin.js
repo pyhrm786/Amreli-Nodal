@@ -603,7 +603,6 @@ async function downloadline(date) {
             try{   
                 const lineName = line;
                 const linedata = data.filter(f => f.line_name === lineName);
-                console.log(linedata);
                 html+=`
                     <tr>
                     <td>${linedata[0].substation_name}</td>
