@@ -548,11 +548,88 @@ async function downloadline(date) {
         alert("Error fetching data for export");
         return;
     } else {
-        const worksheet = XLSX.utils.json_to_sheet(data);
+        let table = document.getElementById('my-table');
+        let html = `
+            <tr>
+                <td>Substation Name</td>
+                <td>Line Name</td>
+                <td>Import</td>
+                <td>Export</td>
+            </tr>
+        `;
+        const transmissionLines = [
+            "66kV S'kundla(220kV)- Chalala-1 Line",
+            "66kV S'kundla(220kV) - Chalala-2 Line",
+            "66kV Chalala - Hudli (Dhari) Line",
+            "220kV S'kundla - Simran Line",
+            "66kV M/s.APPL - Simran Line",
+            "66kV Machiyala(400kV Amreli) - Amreli - A Line",
+            "66kV Machiyala(400kV)- Nana Machiyala (Sedubhar) Line",
+            "66kV Machiyala(400kV Amreli) - Lunidhar Line",
+            "66kV Lunidhar-Ishwariya Line",
+            "66kV Machiyala(400kV Amreli)- Malaviya Pipariya Line",
+            "66kV Machiyala(400kV Amreli) - Ankadiya Line",
+            "66kV Lunidhar-Devgam Line",
+            "66kV Lunidhar-Vena Windfarm",
+            "66kV Machiyala(400kV Amreli)- Gavadka (Amreli-C) Line",
+            "66kV Vadiya - Tori Line",
+            "66kV Derdi-Ranuja Line",
+            "66kV Sultanpur-Ranuja Line",
+            "66kV Bagasara - Paryapat",
+            "66kV Chavand - Babara Line",
+            "66kV Machiyala(400kV Amreli)- Chittal Line",
+            "66kV Charkha - Nadala Line",
+            "66kV Nadala - Kotdapitha Line",
+            "66kV SEPC- Kotdapitha Line-1",
+            "66kV SEPC- Kotdapitha Line-2",
+            "66kV Theoliya 1 - Khambhala Line",
+            "66kV Theoliya 2 - Khambhala Line",
+            "66kV Kuvaragadh- Vena",
+            "66kV KJV EXP Line 1",
+            "66kV KJV EXP Line 2",
+            "66kV Khambhala - Bhadli Line",
+            "66kV Jivapar-kotdapitha line",
+            "66kV S'kundla(220kV) - Liliya Line",
+            "66kV S'kundla(220kV) - Bhoringada Line",
+            "66kV Dhasa (220kV) - Dahithara Line",
+            "66kV Dhasa (220kV) - Bhingrad Line",
+            "66kV Hadala-Mavjinjava Sauni Yojana EHT",
+            "66kV Machiyala(400kV Amreli)-Ishwariya Line",
+            "66kV Kariyana-Rojmal Line",
+            "66kV Kariyana-Khambhala(Sauni Yojana) Line"
+        ];
+        
+        transmissionLines.forEach(line=>{
+            try{   
+                const lineName = line;
+                const linedata = data.filter(f => f.line_name === lineName);
+                console.log(linedata);
+                html+=`
+                    <tr>
+                    <td>${linedata[0].substation_name}</td>
+                    <td>${linedata[0].line_name}</td>
+                    <td>${linedata[0].import}</td>
+                    <td>${linedata[0].export}</td>
+                </tr>
+                `;
+            } catch{
+                html+=`
+                    <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                `;
+            }
+        });
+        table.innerHTML = html;
+        
+        const worksheet = XLSX.utils.table_to_sheet(table);
 
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Line_Report");
-
+        
         XLSX.writeFile(workbook, `Line_Amreli_Report_${date}.xlsx`);
     }
 }
