@@ -31,12 +31,14 @@ getallfeedernames(substationName).then(data =>{
         let ampdatatd = document.createElement('td');
         let ampdata = document.createElement('input');
         ampdata.classList.add(`amp_feeder${count}`);
+        ampdata.setAttribute('type','tel');
         ampdatatd.appendChild(ampdata);
         new_feeder_row.appendChild(ampdatatd);
 
         let timedatatd = document.createElement('td');
         let timedata = document.createElement('input');
         timedata.classList.add(`time_feeder${count}`);
+        timedata.setAttribute('type','tel');
         timedatatd.appendChild(timedata);
         new_feeder_row.appendChild(timedatatd);
 
@@ -61,6 +63,7 @@ getallfeedernames(substationName).then(data =>{
         let mwhdatatd = document.createElement('td');
         let mwhdata = document.createElement('input');
         mwhdata.classList.add(`mwh_feeder${count}`);
+        mwhdata.setAttribute('type','tel');
         mwhdatatd.appendChild(mwhdata);
         new_feeder_row.appendChild(mwhdatatd);
 
@@ -74,6 +77,7 @@ getallfeedernames(substationName).then(data =>{
 
     let mwhdatatd = document.createElement('td');
     let mwhdata = document.createElement('input');
+    mwhdata.setAttribute('type','tel');
     mwhdata.classList.add(`mwh_feeder${count}`);
     mwhdatatd.appendChild(mwhdata);
     new_feeder_row.appendChild(mwhdatatd);
@@ -89,6 +93,7 @@ getallfeedernames(substationName).then(data =>{
 
     let mwhdatatd1 = document.createElement('td');
     let mwhdata1 = document.createElement('input');
+    mwhdata1.setAttribute('type','tel');
     mwhdata1.classList.add(`mwh_feeder${count}`);
     mwhdatatd1.appendChild(mwhdata1);
     new_feeder_row1.appendChild(mwhdatatd1);
@@ -112,19 +117,19 @@ getallcapbank(substationName).then(data =>{
                 <div class="input-box">
                     <label>On Time (HH:MM)</label>
                     <div class="time-input-group">
-                        <input type="number" placeholder="Hrs" class="cap_hrs_${count}" min="0" max="23">
+                        <input type="tel" placeholder="Hrs" class="cap_hrs_${count}" min="0" max="23">
                         <span class="separator">:</span>
-                        <input type="number" placeholder="Min" class="cap_min_${count}" min="0" max="59">
+                        <input type="tel" placeholder="Min" class="cap_min_${count}" min="0" max="59">
                     </div>
                 </div>
 
                 <div class="input-box">
                     <label>Maximum Ampere</label>
-                    <input type="text" placeholder="Enter Amps" class="cap_max_amp${count}">
+                    <input type="tel" placeholder="Enter Amps" class="cap_max_amp${count}">
                 </div>
                 <div class="input-box">
                     <label>Tap Position</label>
-                    <input type="text" placeholder="Enter Tap" class="tap${count}">
+                    <input type="tel" placeholder="Enter Tap" class="tap${count}">
                 </div>
             </div>
         `;
@@ -146,7 +151,7 @@ getalllinenames(substationName).then(data =>{
             </td>
             <td>
                 <div class="input-wrapper">
-                    <input type="text" 
+                    <input type="tel" 
                            class="line-import-${count}" 
                            placeholder="Import">
                     <span class="unit">MW</span>
@@ -154,7 +159,7 @@ getalllinenames(substationName).then(data =>{
             </td>
             <td>
                 <div class="input-wrapper">
-                    <input type="text" 
+                    <input type="tel" 
                            class="line-export-${count}" 
                            placeholder="Export">
                     <span class="unit">MW</span>
