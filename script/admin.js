@@ -446,24 +446,29 @@ async function downloadlmu(date) {
             try{
                 data19max = map19[ssName][feeder.feeder_name].max_amp;
                 data19time = map19[ssName][feeder.feeder_name].time;
-                data24mwh = map24[ssName][feeder.feeder_name].sent_out;
                 html += `
                     <tr>
                         <td>${ssName}</td>
                         <td>${feeder.feeder_name}</td>
                         <td>${data19max}</td>
-                        <td>${data19time}</td>
-                        <td>${data24mwh}</td>
-                        <td></td>
-                    </tr>
-                `;
-            } catch(error){
+                        <td>${data19time}</td>`;
+            }catch{
                 html += `
                     <tr>
                         <td>${ssName}</td>
                         <td>${feeder.feeder_name}</td>
                         <td></td>
+                        <td></td>`;
+            }
+            try{
+                data24mwh = map24[ssName][feeder.feeder_name].sent_out;
+                html+=`
+                        <td>${data24mwh}</td>
                         <td></td>
+                    </tr>
+                `;
+            } catch{
+                html += `
                         <td></td>
                         <td></td>
                     </tr>
