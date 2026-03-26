@@ -558,10 +558,10 @@ async function downloadline(date) {
             </tr>
         `;
         const transmissionLines = [
-            "66kV S'kundla(220kV)- Chalala-1 Line",
-            "66kV S'kundla(220kV) - Chalala-2 Line",
+            "66kV S.kundla(220kV)- Chalala-1 Line",
+            "66kV S.kundla(220kV) - Chalala-2 Line",
             "66kV Chalala - Hudli (Dhari) Line",
-            "220kV S'kundla - Simran Line",
+            "220kV S.kundla - Simran Line",
             "66kV M/s.APPL - Simran Line",
             "66kV Machiyala(400kV Amreli) - Amreli - A Line",
             "66kV Machiyala(400kV)- Nana Machiyala (Sedubhar) Line",
@@ -589,8 +589,8 @@ async function downloadline(date) {
             "66kV KJV EXP Line 2",
             "66kV Khambhala - Bhadli Line",
             "66kV Jivapar-kotdapitha line",
-            "66kV S'kundla(220kV) - Liliya Line",
-            "66kV S'kundla(220kV) - Bhoringada Line",
+            "66kV S.kundla(220kV) - Liliya Line",
+            "66kV S.kundla(220kV) - Bhoringada Line",
             "66kV Dhasa (220kV) - Dahithara Line",
             "66kV Dhasa (220kV) - Bhingrad Line",
             "66kV Hadala-Mavjinjava Sauni Yojana EHT",

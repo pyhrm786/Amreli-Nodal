@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GETCO | Substation Dashboard</title>
+        <link rel="stylesheet" href="styles/update.css">
+        <link rel="icon" type="image/png" href="images/Logo_GETCO.png">
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+        <header class="top-bar">
+            <div class="header-left">
+                <img class="logo" src="images/Logo_GETCO.png">
+                <div class="brand-text">
+                    <span class="division">Amreli Transmission Division</span>
+                    <span class="company">Gujarat Energy Transmission Co. Ltd.</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="logout-btn" onclick="window.location.href='substation.html'">Back</button>
+            </div>
+        </header>
+
+        <main class="dashboard-container">
+            <section class="ss-info-card">
+                <div class="ss-identity">
+                    <span class="label">SUBSTATION</span>
+                    <h2 id="ss-name-display">Loading Substation Name...</h2>
+                </div>
+            </section>
+
+            <section class="ss-info-card">
+                <div class="time-controls">
+                    <div class="date-input-wrapper">
+                        <label class="control-label">Select Date:</label>
+                        <input type="date" id="report-date" class="custom-date-picker">
+                    </div>
+                    <span class="control-label" style="padding-left: 30px;">Select Report Time:</span>
+                    <div class="button-group">
+                        <button class="time-btn" id="btn-19" onclick="fetch19();">Update 19:00 Hrs</button>
+                        <button class="time-btn" id="btn-24" onclick="fetch24();">Update 24:00 Hrs</button>
+                    </div>
+                </div>
+            </section>
+            <section class="table-card">
+                <div class="table-responsive">
+                </div>
+            </section>
+        </main>
+        <script src="script/update.js"></script>
+    </body>
+</html>

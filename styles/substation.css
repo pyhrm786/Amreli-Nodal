@@ -102,6 +102,32 @@ body {
     box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
 }
 
+.update-btn {
+    background: rgb(189, 255, 189);
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    padding: 10px 22px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.update-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+}
+
+.update-btn.active {
+    background-color: var(--orange);
+    border-color: var(--orange);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+}
+
+
 .table-card {
     background: var(--white);
     border-radius: 10px;

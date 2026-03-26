@@ -14,40 +14,28 @@ let linedata = [];
 getallfeedernames(substationName).then(data =>{
     feedersdata = data;
     let table19 = document.querySelector('.t1');
-    table19.innerHTML = `<thead>
+    let html = `<thead>
                             <tr>
                                 <th>Feeder Name</th>
                                 <th>Amps</th>
                                 <th>Time</th>
                             </tr>
                         </thead>`;
+    
     count = 1;
     data.forEach(feeder => {
-        let new_feeder_row = document.createElement('tr');
-        let feeder_nm = document.createElement('td');
-        feeder_nm.innerHTML = feeder.feeder_name;
-        new_feeder_row.appendChild(feeder_nm);
-
-        let ampdatatd = document.createElement('td');
-        let ampdata = document.createElement('input');
-        ampdata.classList.add(`amp_feeder${count}`);
-        ampdata.setAttribute('type','tel');
-        ampdatatd.appendChild(ampdata);
-        new_feeder_row.appendChild(ampdatatd);
-
-        let timedatatd = document.createElement('td');
-        let timedata = document.createElement('input');
-        timedata.classList.add(`time_feeder${count}`);
-        timedata.setAttribute('type','tel');
-        timedatatd.appendChild(timedata);
-        new_feeder_row.appendChild(timedatatd);
-
-        table19.appendChild(new_feeder_row);
+        html+= `
+            <tr>
+                <td>${feeder.feeder_name}</td>
+                <td><input type="number" inputmode="decimal" class="amp_feeder${count}" placeholder="Amp"></td>
+                <td><input type="number" inputmode="decimal" class="time_feeder${count}" placeholder="Time"></td>
+            </tr>
+        `;
         count+=1;
     });
-
+    table19.innerHTML = html;
     let table24 = document.querySelector('.t2');
-    table24.innerHTML = `<thead>
+    let html24 = `<thead>
                             <tr>
                                 <th>Feeder Name</th>
                                 <th>MWH</th>
@@ -55,50 +43,27 @@ getallfeedernames(substationName).then(data =>{
                         </thead>`;
     count = 1;
     data.forEach(feeder => {
-        let new_feeder_row = document.createElement('tr');
-        let feeder_nm = document.createElement('td');
-        feeder_nm.innerHTML = feeder.feeder_name;
-        new_feeder_row.appendChild(feeder_nm);
-
-        let mwhdatatd = document.createElement('td');
-        let mwhdata = document.createElement('input');
-        mwhdata.classList.add(`mwh_feeder${count}`);
-        mwhdata.setAttribute('type','tel');
-        mwhdatatd.appendChild(mwhdata);
-        new_feeder_row.appendChild(mwhdatatd);
-
-        table24.appendChild(new_feeder_row);
+        html24 += `
+            <tr>
+                <td>${feeder.feeder_name}</td>
+                <td><input type="number" inputmode="decimal" class="mwh_feeder${count}" placeholder="MWH"></td>
+            </tr>
+        `;
         count+=1;
     });
-    let new_feeder_row = document.createElement('tr');
-    let feeder_nm = document.createElement('td');
-    feeder_nm.innerHTML = 'Station';
-    new_feeder_row.appendChild(feeder_nm);
 
-    let mwhdatatd = document.createElement('td');
-    let mwhdata = document.createElement('input');
-    mwhdata.setAttribute('type','tel');
-    mwhdata.classList.add(`mwh_feeder${count}`);
-    mwhdatatd.appendChild(mwhdata);
-    new_feeder_row.appendChild(mwhdatatd);
+    html24+=`
+        <tr>
+                <td>Station</td>
+                <td><input type="number" inputmode="decimal" class="mwh_feeder${count}" placeholder="MWH"></td>
+        </tr>
+        <tr>
+                <td>LV Total</td>
+                <td><input type="number" inputmode="decimal" class="mwh_feeder${count+1}" placeholder="MWH"></td>
+        </tr>
+    `;
 
-    table24.appendChild(new_feeder_row);
-
-    count+=1;
-
-    let new_feeder_row1 = document.createElement('tr');
-    let feeder_nm1 = document.createElement('td');
-    feeder_nm1.innerHTML = 'LV Total';
-    new_feeder_row1.appendChild(feeder_nm1);
-
-    let mwhdatatd1 = document.createElement('td');
-    let mwhdata1 = document.createElement('input');
-    mwhdata1.setAttribute('type','tel');
-    mwhdata1.classList.add(`mwh_feeder${count}`);
-    mwhdatatd1.appendChild(mwhdata1);
-    new_feeder_row1.appendChild(mwhdatatd1);
-
-    table24.appendChild(new_feeder_row1);
+    table24.innerHTML = html24;
 });
 getallcapbank(substationName).then(data =>{
     capbankdata = data;
@@ -117,19 +82,19 @@ getallcapbank(substationName).then(data =>{
                 <div class="input-box">
                     <label>On Time (HH:MM)</label>
                     <div class="time-input-group">
-                        <input type="tel" placeholder="Hrs" class="cap_hrs_${count}" min="0" max="23">
+                        <input type="number" inputmode="decimal" placeholder="Hrs" class="cap_hrs_${count}" min="0" max="23">
                         <span class="separator">:</span>
-                        <input type="tel" placeholder="Min" class="cap_min_${count}" min="0" max="59">
+                        <input type="number" inputmode="decimal" placeholder="Min" class="cap_min_${count}" min="0" max="59">
                     </div>
                 </div>
 
                 <div class="input-box">
                     <label>Maximum Ampere</label>
-                    <input type="tel" placeholder="Enter Amps" class="cap_max_amp${count}">
+                    <input type="number" inputmode="decimal" placeholder="Enter Amps" class="cap_max_amp${count}">
                 </div>
                 <div class="input-box">
                     <label>Tap Position</label>
-                    <input type="tel" placeholder="Enter Tap" class="tap${count}">
+                    <input type="number" inputmode="decimal" placeholder="Enter Tap" class="tap${count}">
                 </div>
             </div>
         `;
@@ -151,17 +116,17 @@ getalllinenames(substationName).then(data =>{
             </td>
             <td>
                 <div class="input-wrapper">
-                    <input type="tel" 
-                           class="line-import-${count}" 
-                           placeholder="Import">
+                    <input type="number" inputmode="decimal" 
+                        class="line-import-${count}" 
+                        placeholder="Import">
                     <span class="unit">MW</span>
                 </div>
             </td>
             <td>
                 <div class="input-wrapper">
-                    <input type="tel" 
-                           class="line-export-${count}" 
-                           placeholder="Export">
+                    <input type="number" inputmode="decimal"
+                        class="line-export-${count}" 
+                        placeholder="Export">
                     <span class="unit">MW</span>
                 </div>
             </td>
@@ -230,94 +195,106 @@ function detail24(){
     button24 = false;
     button19 = false;
 }
-function submit19(){
+async function check19(date,ss) {
+    const {data, error} = await supabaseClient.from('lmudet19hrs').select('*').eq('date',date).eq('substation_name',ss);
+    if(error){
+        return false;
+    }
+    return data.length > 0;
+}
+async function submit19(){
     let date = document.getElementById('report-date').value;
     if (!date) { alert("Please select a date first."); return; }
     let button = document.querySelector('.b1');
     let buttontext = document.querySelector('.bb1');
-    button.disabled = true;
-    buttontext.style.opacity = '0.5';
     buttontext.innerText = 'Submitting...';
 
     let newssname = substationName;
-
-    let kv11maxv = document.getElementById('kv11_maxv').value;
-    let kv11maxt = document.getElementById('kv11_maxt').value;
-    let kv11minv = document.getElementById('kv11_minv').value;
-    let kv11mint = document.getElementById('kv11_mint').value;
-    let kv66maxv = document.getElementById('kv66_maxv').value;
-    let kv66maxt = document.getElementById('kv66_maxt').value;
-    let kv66minv = document.getElementById('kv66_minv').value;
-    let kv66mint = document.getElementById('kv66_mint').value;
-    if(kv11maxv && kv11maxt && kv11minv && kv11mint && kv66maxv && kv66maxt && kv66minv && kv66mint){
-        let voltage = {
-            'date' : date,
-            'substation_name' : newssname,
-            'kv11_max' : kv11maxv,
-            'kv11_max_time' : kv11maxt,
-            'kv11_min' : kv11minv,
-            'kv11_min_time' : kv11mint,
-            'kv66_max' : kv66maxv,
-            'kv66_max_time' : kv66maxt,
-            'kv66_min' : kv66minv,
-            'kv66_min_time' : kv66mint
-        }
-        loadvoltage(voltage);
-
-        let loading_feeder = [];
-        let count = 1;
-        feedersdata.forEach(feeder=>{
-            let max_amp = document.querySelector(`.amp_feeder${count}`).value;
-            let time = document.querySelector(`.time_feeder${count}`).value;
-            let feederName = feeder.feeder_name;
-
-            if(max_amp && time) {loading_feeder.push({
+    let ifdata = await check19(date,newssname);
+    if(!ifdata){
+        let kv11maxv = document.getElementById('kv11_maxv').value;
+        let kv11maxt = document.getElementById('kv11_maxt').value;
+        let kv11minv = document.getElementById('kv11_minv').value;
+        let kv11mint = document.getElementById('kv11_mint').value;
+        let kv66maxv = document.getElementById('kv66_maxv').value;
+        let kv66maxt = document.getElementById('kv66_maxt').value;
+        let kv66minv = document.getElementById('kv66_minv').value;
+        let kv66mint = document.getElementById('kv66_mint').value;
+        if(kv11maxv && kv11maxt && kv11minv && kv11mint && kv66maxv && kv66maxt && kv66minv && kv66mint){
+            let voltage = {
                 'date' : date,
                 'substation_name' : newssname,
-                'feeder_name' : feederName,
-                'max_amp' : max_amp,
-                'time' : time
-            });} else {
-                loading_feeder.push({
-                'date' : date,
-                'substation_name' : newssname,
-                'feeder_name' : feederName,
-                'max_amp' : '0',
-                'time' : '0'
-            });
+                'kv11_max' : kv11maxv,
+                'kv11_max_time' : kv11maxt,
+                'kv11_min' : kv11minv,
+                'kv11_min_time' : kv11mint,
+                'kv66_max' : kv66maxv,
+                'kv66_max_time' : kv66maxt,
+                'kv66_min' : kv66minv,
+                'kv66_min_time' : kv66mint
             }
-            count++;
-        });
-        loadlmu19(loading_feeder);
+            loadvoltage(voltage);
 
-        count = 1;
-        let caparray = [];
-        capbankdata.forEach(bank=>{
-            let caphrs = document.querySelector(`.cap_hrs_${count}`).value;
-            let capmin = document.querySelector(`.cap_min_${count}`).value;
-            let amps = document.querySelector(`.cap_max_amp${count}`).value;
-            let tap = document.querySelector(`.tap${count}`).value;
+            let loading_feeder = [];
+            let count = 1;
+            feedersdata.forEach(feeder=>{
+                let max_amp = document.querySelector(`.amp_feeder${count}`).value;
+                let time = document.querySelector(`.time_feeder${count}`).value;
+                let feederName = feeder.feeder_name;
 
-            if (caphrs && amps && tap){
-                caparray.push({
+                if(max_amp && time) {loading_feeder.push({
                     'date' : date,
                     'substation_name' : newssname,
-                    'capacitor_bank' : bank.capacitor_bank,
-                    'hours' : caphrs,
-                    'minutes' : capmin,
-                    'max_amp' : amps,
-                    'tap' : tap
-                })
+                    'feeder_name' : feederName,
+                    'max_amp' : max_amp,
+                    'time' : time
+                });} else {
+                    loading_feeder.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'feeder_name' : feederName,
+                    'max_amp' : '0',
+                    'time' : '0'
+                });
+                }
+                count++;
+            });
+            loadlmu19(loading_feeder);
+
+            count = 1;
+            let caparray = [];
+            capbankdata.forEach(bank=>{
+                let caphrs = document.querySelector(`.cap_hrs_${count}`).value;
+                let capmin = document.querySelector(`.cap_min_${count}`).value;
+                let amps = document.querySelector(`.cap_max_amp${count}`).value;
+                let tap = document.querySelector(`.tap${count}`).value;
+
+                if (caphrs && amps && tap){
+                    caparray.push({
+                        'date' : date,
+                        'substation_name' : newssname,
+                        'capacitor_bank' : bank.capacitor_bank,
+                        'hours' : caphrs,
+                        'minutes' : capmin,
+                        'max_amp' : amps,
+                        'tap' : tap
+                    })
+                }
+                count++;
+            });
+            if (caparray.length>0){
+                loadcap(caparray);
             }
-            count++;
-        });
-        if (caparray.length>0){
-            loadcap(caparray);
+            alert('✅ data submitted successfully');
+            button.disabled = true;
+            buttontext.style.opacity = '0.5';
+            buttontext.innerText = 'Submitted';
+        } else{
+            alert('Voltage data entry is compulsory...!!!');
         }
-        alert('✅ data submitted successfully');
-        buttontext.innerText = 'Submitted';
-    } else{
-        alert('Voltage data entry is compulsory...!!!');
+    } else {
+        alert(`❌ Data Already Entered for Dt.${date}`);
+        buttontext.innerText = 'Submit Report';
     }
 }
 async function loadlmu19(array) {
@@ -344,85 +321,99 @@ async function loadcap(array) {
         console.log('capacitor data uploaded successfuly');
     }
 }
-function submit24(){
+async function check24(date, ss) {
+    const {data, error} = await supabaseClient.from('lmudet24hrs').select('*').eq('date',date).eq('substation_name',ss);
+    if(error){
+        return false;
+    }
+    return data.length > 0;
+}
+async function submit24(){
     let date = document.getElementById('report-date').value;
     if (!date) { alert("Please select a date first."); return; }
     let button = document.querySelector('.b2');
     let buttontext = document.querySelector('.bb2');
-    button.disabled = true;
-    buttontext.style.opacity = '0.5';
+    
     buttontext.innerText = 'Submitting...';
 
     let newssname = substationName;
-    let count = 1;
-    let mwhdata = [];
-    feedersdata.forEach(feeder=>{
-        let mwh = document.querySelector(`.mwh_feeder${count}`).value;
+    let ifdata = await check24(date,newssname);
+    if(!ifdata){
+        let count = 1;
+        let mwhdata = [];
+        feedersdata.forEach(feeder=>{
+            let mwh = document.querySelector(`.mwh_feeder${count}`).value;
 
-        if(mwh){
-            mwhdata.push({
-                'date' : date,
-                'substation_name' : newssname,
-                'feeder_name' : feeder.feeder_name,
-                'sent_out' : mwh
-            });
-        } else {
-            mwhdata.push({
-                'date' : date,
-                'substation_name' : newssname,
-                'feeder_name' : feeder.feeder_name,
-                'sent_out' : '0'
-            });
-        }
+            if(mwh){
+                mwhdata.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'feeder_name' : feeder.feeder_name,
+                    'sent_out' : mwh
+                });
+            } else {
+                mwhdata.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'feeder_name' : feeder.feeder_name,
+                    'sent_out' : '0'
+                });
+            }
+            count++;
+        });
+        let stationmwh = document.querySelector(`.mwh_feeder${count}`).value;
+        mwhdata.push({
+            'date' : date,
+            'substation_name' : newssname,
+            'feeder_name' : 'Station',
+            'sent_out' : stationmwh
+        });
         count++;
-    });
-    let stationmwh = document.querySelector(`.mwh_feeder${count}`).value;
-    mwhdata.push({
-        'date' : date,
-        'substation_name' : newssname,
-        'feeder_name' : 'Station',
-        'sent_out' : stationmwh
-    });
-    count++;
-    let lvtotal = document.querySelector(`.mwh_feeder${count}`).value;
-    mwhdata.push({
-        'date' : date,
-        'substation_name' : newssname,
-        'feeder_name' : 'LV Total',
-        'sent_out' : lvtotal
-    });
+        let lvtotal = document.querySelector(`.mwh_feeder${count}`).value;
+        mwhdata.push({
+            'date' : date,
+            'substation_name' : newssname,
+            'feeder_name' : 'LV Total',
+            'sent_out' : lvtotal
+        });
 
-    loadlmu24(mwhdata);
-    count = 1;
-    let linedetail = [];
-    linedata.forEach(line=>{
-        let imp = document.querySelector(`.line-import-${count}`).value;
-        let exp = document.querySelector(`.line-export-${count}`).value;
+        loadlmu24(mwhdata);
+        count = 1;
+        let linedetail = [];
+        linedata.forEach(line=>{
+            let imp = document.querySelector(`.line-import-${count}`).value;
+            let exp = document.querySelector(`.line-export-${count}`).value;
 
-        if(imp && exp){
-            linedetail.push({
-                'date' : date,
-                'substation_name' : newssname,
-                'line_name' : line.line_name,
-                'import' : imp,
-                'export' : exp
-            });
-        } else {
-            linedetail.push({
-                'date' : date,
-                'substation_name' : newssname,
-                'line_name' : line.line_name,
-                'import' : '0',
-                'export' : '0'
-            });
+            if(imp && exp){
+                linedetail.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'line_name' : line.line_name,
+                    'import' : imp,
+                    'export' : exp
+                });
+            } else {
+                linedetail.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'line_name' : line.line_name,
+                    'import' : '0',
+                    'export' : '0'
+                });
+            }
+            count++;
+        });
+        if (linedetail.length>0){
+            loadlinedata(linedetail);
         }
-        count++;
-    });
-    if (linedetail.length>0){
-        loadlinedata(linedetail);
+        alert('✅ data submitted successfully');
+        button.disabled = true;
+        buttontext.style.opacity = '0.5';
+        buttontext.innerText = 'Submitted';
+    } else{
+        alert(`❌ Data already submitted for dt.${date}`);
+        buttontext.innerText = 'Submit Report';
     }
-    alert('✅ data submitted successfully');
-    buttontext.innerText = 'Submitted';
 }
 async function loadlmu24(array) {
     const { data, error } = await supabaseClient
@@ -443,4 +434,7 @@ async function loadlinedata(array) {
     } else{
         console.log('Line data uploaded successfully');
     }
+}
+function update(){
+    window.location.href = 'update.html';
 }
