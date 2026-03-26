@@ -207,6 +207,8 @@ async function submit19(){
     if (!date) { alert("Please select a date first."); return; }
     let button = document.querySelector('.b1');
     let buttontext = document.querySelector('.bb1');
+    button.disabled = true;
+    buttontext.style.opacity = '0.5';
     buttontext.innerText = 'Submitting...';
 
     let newssname = substationName;
@@ -286,8 +288,6 @@ async function submit19(){
                 loadcap(caparray);
             }
             alert('✅ data submitted successfully');
-            button.disabled = true;
-            buttontext.style.opacity = '0.5';
             buttontext.innerText = 'Submitted';
         } else{
             alert('Voltage data entry is compulsory...!!!');
@@ -333,7 +333,8 @@ async function submit24(){
     if (!date) { alert("Please select a date first."); return; }
     let button = document.querySelector('.b2');
     let buttontext = document.querySelector('.bb2');
-    
+    button.disabled = true;
+    buttontext.style.opacity = '0.5';
     buttontext.innerText = 'Submitting...';
 
     let newssname = substationName;
@@ -407,8 +408,6 @@ async function submit24(){
             loadlinedata(linedetail);
         }
         alert('✅ data submitted successfully');
-        button.disabled = true;
-        buttontext.style.opacity = '0.5';
         buttontext.innerText = 'Submitted';
     } else{
         alert(`❌ Data already submitted for dt.${date}`);
