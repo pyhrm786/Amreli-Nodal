@@ -601,7 +601,8 @@ async function downloadline(date) {
             "66kV Hadala-Mavjinjava Sauni Yojana EHT",
             "66kV Machiyala(400kV Amreli)-Ishwariya Line",
             "66kV Kariyana-Rojmal Line",
-            "66kV Kariyana-Khambhala(Sauni Yojana) Line"
+            "66kV Kariyana-Khambhala(Sauni Yojana) Line",
+            "66kV Bhingrad-Skype solar line"
         ];
         
         transmissionLines.forEach(line=>{
