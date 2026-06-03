@@ -21,6 +21,8 @@ getAllSubstations().then(data =>{
     ssoptions3.innerHTML = '';
     let ssoptions4 = document.getElementById('ss-dropdown4');
     ssoptions4.innerHTML = '';
+    let ssoptions5 = document.getElementById('ss-dropdown5');
+    ssoptions4.innerHTML = '';
     data.forEach(ss_name => {
         let newoption = document.createElement('option');
         newoption.innerHTML = ss_name.substation_name;
@@ -44,6 +46,12 @@ getAllSubstations().then(data =>{
         newoption.innerHTML = ss_name.substation_name;
         newoption.setAttribute('value', ss_name.substation_name);
         ssoptions4.appendChild(newoption);
+    });
+    data.forEach(ss_name => {
+        let newoption = document.createElement('option');
+        newoption.innerHTML = ss_name.substation_name;
+        newoption.setAttribute('value', ss_name.substation_name);
+        ssoptions5.appendChild(newoption);
     });
     datass = data;
 });
@@ -144,8 +152,6 @@ function addSubstation(){
     const ssId = document.getElementById('new-ss-id').value;
     const userName = document.getElementById('new-ss-user').value;
     const passWord = document.getElementById('new-ss-pass').value;
-
-    console.log(ssName, ssId, userName, passWord);
 
     if (ssName && ssId && userName && passWord){
         let newuser = {
@@ -705,5 +711,259 @@ async function getstatus() {
     } catch (error) {
         console.error("Status check failed:", error);
         alert("Could not load substation status.");
+    }
+}
+async function getstatusss19() {
+    let date = document.getElementById('gen-date1').value;
+    let ss = document.getElementById('ss-dropdown5').value;
+    let statusTable = document.querySelector('.status-table');
+
+    let entry19 = await get19(date, ss);
+    let html = entry19;
+    let volt19 = await getvolt(date, ss);
+    html += volt19;
+    let cap19 = await getcap(date,ss);
+    html += cap19;
+    html += `
+        <tr><td colspan="5" style="text-align:center;"><button class="delete-btn" style="display:flex; 
+            margin:5px;
+            width:100%;
+            justify-content:center;" onclick='delete19("${date}","${ss}");'>
+            Delete all entries of 19Hrs</button></td></tr>
+    `;
+    statusTable.innerHTML = html;
+}
+async function get19(date,ss) {
+    const {data,error} = await supabaseClient
+        .from('lmudet19hrs')
+        .select('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if (error){
+        alert('Error...');
+        return;
+    }
+    let htmlcode = `
+        <tr>
+            <th>Date</th>
+            <th>Substation Name</th>
+            <th>Feeder Name</th>
+            <th>Max Amp</th>
+            <th>Time</th>
+        </tr>
+    `;
+    for (entry of data){
+        htmlcode+=`
+            <tr>
+                <td>${entry.date}</td>
+                <td>${entry.substation_name}</td>
+                <td>${entry.feeder_name}</td>
+                <td>${entry.max_amp}</td>
+                <td>${entry.time}</td>
+            </tr>
+        `;
+    }
+    return htmlcode;
+}
+async function getvolt(date,ss) {
+    const {data, error} = await supabaseClient
+        .from('voltdet19hrs')
+        .select('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if(error){
+        alert('Error...');
+        return;
+    }
+    let htmlcode = `
+        <tr>
+            <th></th>
+            <th>Max</th>
+            <th>Time</th>
+            <th>Min</th>
+            <th>Time</th>
+        </tr>
+        <tr>
+            <td>11KV</td>
+            <td>${data[0].kv11_max}</td>
+            <td>${data[0].kv11_max_time}</td>
+            <td>${data[0].kv11_min}</td>
+            <td>${data[0].kv11_min_time}</td>
+        </tr>
+        <tr>
+            <td>66KV</td>
+            <td>${data[0].kv66_max}</td>
+            <td>${data[0].kv66_max_time}</td>
+            <td>${data[0].kv66_min}</td>
+            <td>${data[0].kv66_min_time}</td>
+        </tr>
+    `;
+    return htmlcode;
+}
+async function getcap(date,ss) {
+    const {data,error} = await supabaseClient
+        .from('capdet19hrs')
+        .select('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if(error){
+        alert('Error');
+        return;
+    }
+    let htmlcode = `<tr><td colspan="5" style="text-align:center;">Capacitor Banks</td></tr>`;
+    for(capa of data){
+        htmlcode += `
+            <tr>
+                <td colspan="5" style="text-align:center;">
+                Name = ${capa.capacitor_bank}, 
+                Time = ${capa.hours}:${capa.minutes}, 
+                Max Amp = ${capa.max_amp}, 
+                Tap = ${capa.tap}
+                </td>    
+            </tr>
+        `;
+    }
+    return htmlcode;
+}
+async function delete19(date, ss) {
+    await del19(date, ss);
+    await delvolt(date, ss);
+    await delcap(date, ss);
+    alert(`Data deleted for ${ss} for Dt.${date}`);
+}
+async function del19(date, ss) {
+    const { data, error } = await supabaseClient
+        .from('lmudet19hrs')
+        .delete('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if (error){
+        alert('Error occured...!!!');
+    }
+}
+async function delvolt(date, ss) {
+    const { data, error } = await supabaseClient
+        .from('voltdet19hrs')
+        .delete('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if (error){
+        alert('Error occured...!!!');
+    }
+}
+async function delcap(date, ss) {
+    const { data, error } = await supabaseClient
+        .from('capdet19hrs')
+        .delete('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if (error){
+        alert('Error occured...!!!');
+        return;
+    }
+}
+
+async function getstatusss24() {
+    let date1 = document.getElementById('gen-date1').value;
+    let ss1 = document.getElementById('ss-dropdown5').value;
+    let statusTable = document.querySelector('.status-table');
+
+    let entry24 = await get24(date1, ss1);
+    let html = entry24;
+    let line24 = await getline(date1, ss1);
+    html+= line24;
+    
+    html += `
+        <tr><td colspan="4" style="text-align:center;"><button class="delete-btn" style="display:flex; 
+            margin:5px;
+            width:100%;
+            justify-content:center;" onclick='delete24("${date1}","${ss1}");'>
+            Delete all entries of 24Hrs</button></td></tr>
+    `;
+    statusTable.innerHTML = html;
+}
+async function get24(date, ss) {
+    const {data,error} = await supabaseClient
+        .from('lmudet24hrs')
+        .select('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if (error){
+        alert('Error...');
+        return;
+    }
+    let htmlcode = `
+        <tr>
+            <th>Date</th>
+            <th>Substation Name</th>
+            <th>Feeder Name</th>
+            <th>MWH</th>
+        </tr>
+    `;
+    for (entry of data){
+        htmlcode+=`
+            <tr>
+                <td>${entry.date}</td>
+                <td>${entry.substation_name}</td>
+                <td>${entry.feeder_name}</td>
+                <td>${entry.sent_out}</td>
+            </tr>
+        `;
+    }
+    return htmlcode;
+}
+async function getline(date, ss) {
+    const {data, error} = await supabaseClient
+        .from('linedet24hrs')
+        .select('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if(error){
+        alert('Error...');
+        return;
+    }
+    let htmlcode = `
+        <tr>
+            <th>Date</th>
+            <th>Line Name</th>
+            <th>Import</th>
+            <th>Export</th>
+        </tr>
+    `;
+    for(line of data){
+        htmlcode+=`
+        <tr>
+            <td>${line.date}</td>
+            <td>${line.line_name}</td>
+            <td>${line.import}</td>
+            <td>${line.export}</td>
+        </tr>
+        `
+    }
+    return htmlcode;
+}
+async function delete24(date, ss){
+    await del24(date, ss);
+    await delline(date, ss);
+    alert(`Data deleted for ${ss} for Dt.${date}`);
+}
+async function del24(date, ss) {
+    const { data, error } = await supabaseClient
+        .from('lmudet24hrs')
+        .delete('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if (error){
+        alert('Error occured...!!!');
+    }
+}
+async function delline(date, ss) {
+    const { data, error } = await supabaseClient
+        .from('linedet24hrs')
+        .delete('*')
+        .eq('date',date)
+        .eq('substation_name',ss);
+    if (error){
+        alert('Error occured...!!!');
     }
 }

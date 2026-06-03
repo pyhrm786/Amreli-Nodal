@@ -50,8 +50,37 @@
                         </div>
                     </div>
                 </div>
+                <div class="menu-inner">
+                    <div style="margin-top: 20px; 
+                        font-weight: bold; 
+                        background-color: rgba(255, 68, 0, 0.719);
+                        padding: 5px;
+                        border-radius: 5px;
+                        color: white;
+                    ">💡 For Particular SS Enry</div>
+                    <div class="date-section">
+                        <label for="gen-date1">Target Date</label>
+                        <input type="date" id="gen-date1" class="menu-date-input">
+                    </div>
+                    <div class="input-group">
+                        <select id="ss-dropdown5">
+                            <option value="" disabled selected>Select Substation...</option>
+                        </select>
+                    </div>
+                    <div class="check-status-form">
+                        <div class="check-status-button">
+                            <button class="check-status" onclick="getstatusss19();">
+                                Check Status 19Hrs
+                            </button>
+                            <button class="check-status" onclick="getstatusss24();">
+                                Check Status 24Hrs
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="table-of-status">
             <table class="status-table" id="my-table">
             </table>
