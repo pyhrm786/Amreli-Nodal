@@ -9,6 +9,7 @@ ssname.innerHTML = substationName;
 let feedersdata = [];
 let capbankdata = [];
 let linedata = [];
+let agfeederdata = [];
 getallfeedernames(substationName).then(data =>{
     feedersdata = data;
 });
@@ -17,6 +18,9 @@ getallcapbank(substationName).then(data =>{
 });
 getalllinenames(substationName).then(data =>{
     linedata = data;
+});
+getallagfeedernames(substationName).then(data =>{
+    agfeederdata = data;
 });
 async function getallcapbank(ssName) {
     const { data, error} = await supabaseClient
@@ -47,6 +51,18 @@ async function getalllinenames(ssName) {
         .eq('substation_name',ssName);
     if (error) {
         console.error("Error fetching Line Names:", error.message);
+        return [];
+    }
+    return data;
+}
+async function getallagfeedernames(ssName) {
+    const { data, error} = await supabaseClient
+        .from('feeders')
+        .select('feeder_name')
+        .eq('substation_name',ssName)
+        .eq('feeder_type','AG');
+    if (error) {
+        console.error("Error fetching feeders:", error.message);
         return [];
     }
     return data;
@@ -540,6 +556,74 @@ async function update24(date,ss,feeder,id) {
     const {data,error} = await supabaseClient
         .from('lmudet24hrs')
         .update({'sent_out': mwh})
+        .eq('date',date)
+        .eq('substation_name',ss)
+        .eq('feeder_name',feeder);
+    if(error){
+        alert("Error occured, please try again or contact Nodal.");
+        return;
+    }
+    alert("Updated successfully!");
+}
+async function fetch2hrs() {
+    let date = document.getElementById('report-date').value;
+    if (!date) { alert("Please select a date first."); return; }
+    let ssName = substationName;
+    let table = document.querySelector('.table-responsive');
+    let html = `<table class="table-output">
+        <tr>
+            <th>Feeder Name</th>
+            <th>2HRS MWH</th>
+            <th>Update</th>
+        </tr>
+    `;
+    count = 1;
+    for (const feeder of agfeederdata){
+        let feedername = feeder.feeder_name;
+        const feederentry = await fetchfeeder2hrs(date,feedername,ssName,count);
+        html += feederentry;
+        count+=1;
+    }
+    table.innerHTML = html;
+}
+async function fetchfeeder2hrs(date,feeder,ss,id) {
+    const {data, error} = await supabaseClient
+        .from('new2hrsdetail')
+        .select('*')
+        .eq('date',date)
+        .eq('substation_name',ss)
+        .eq('feeder_name',feeder);
+
+    if(error){
+        let htmlcode = `
+            <tr>
+                <td>${feeder}</td>
+                <td><input type="number" id='agmwh${id}' inputmode="decimal"></td>
+                <td>
+                    <button class='update-btn' onclick='update2hrs("${date}","${ss}","${feeder}","${id}")'>Update</button>
+                </td>
+            </tr>
+        `;
+        return htmlcode;
+    } else{
+        let htmlcode = `
+            <tr>
+                <td>${feeder}</td>
+                <td><input type="number" id='agmwh${id}' inputmode="decimal" value='${data[0].mwh2hrs}'></td>
+                <td>
+                    <button class='update-btn' onclick='update2hrs("${date}","${ss}","${feeder}","${id}")'>Update</button>
+                </td>
+            </tr>
+        `;
+        return htmlcode;
+    }
+}
+async function update2hrs(date,ss,feeder,id) {
+    let agmwh = document.getElementById(`agmwh${id}`).value;
+
+    const {data,error} = await supabaseClient
+        .from('new2hrsdetail')
+        .update({'mwh2hrs': agmwh})
         .eq('date',date)
         .eq('substation_name',ss)
         .eq('feeder_name',feeder);

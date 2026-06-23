@@ -243,6 +243,30 @@ body {
     transform: translateY(0px);
     box-shadow: none;
 }
+.hrs-btn {
+    background: rgb(255, 204, 189);
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    padding: 10px 22px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.hrs-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+}
+
+.hrs-btn.active {
+    background-color: var(--orange);
+    border-color: var(--orange);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+}
 
 /* ── VOLTAGE UPDATE BUTTON ──────────────────────────────── */
 .action-update-btn {

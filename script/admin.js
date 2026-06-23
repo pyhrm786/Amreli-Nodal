@@ -371,10 +371,11 @@ function exportData(report){
 async function downloadlmu(date) {
     if (!date) { alert("Please select a date first."); return; }
 
-    const [res19, res24, resfeeder] = await Promise.all([
+    const [res19, res24, resfeeder,res2hrs] = await Promise.all([
         supabaseClient.from('lmudet19hrs').select('*').eq('date', date),
         supabaseClient.from('lmudet24hrs').select('*').eq('date', date),
-        supabaseClient.from('feeders').select('*')
+        supabaseClient.from('feeders').select('*'),
+        supabaseClient.from('new2hrsdetail').select('*').eq('date',date)
     ]);
 
     if (res19.error || res24.error) { alert("Error fetching data"); return; }
@@ -388,6 +389,7 @@ async function downloadlmu(date) {
             <td>Time</td>
             <td>Sent Out</td>
             <td>LV Total</td>
+            <td>2Hrs MWH</td>
         </tr>
     `;
     let mapstation = Object.fromEntries(res24.data.filter(d=>d.feeder_name == 'Station').map(d=>[d.substation_name, d]));
@@ -401,6 +403,11 @@ async function downloadlmu(date) {
     res24.data.forEach(d => {
         if (!map24[d.substation_name]) map24[d.substation_name] = {};
         map24[d.substation_name][d.feeder_name] = d;
+    });
+    const map2hrs = {};
+    res2hrs.data.forEach(d => {
+        if (!map2hrs[d.substation_name]) map2hrs[d.substation_name] = {};
+        map2hrs[d.substation_name][d.feeder_name] = d;
     });
     const substations = [
         "66kV Amreli-A SS",
@@ -471,12 +478,23 @@ async function downloadlmu(date) {
                 html+=`
                         <td>${data24mwh}</td>
                         <td></td>
-                    </tr>
                 `;
             } catch{
                 html += `
                         <td></td>
                         <td></td>
+                `;
+            }
+            try{
+                data2hrs = map2hrs[ssName][feeder.feeder_name].mwh2hrs;
+                html +=`
+                        <td>${data2hrs}</td>
+                    </tr>
+                `;
+            }catch{
+                data2hrs = '';
+                html +=`
+                        <td>${data2hrs}</td>
                     </tr>
                 `;
             }
@@ -490,6 +508,7 @@ async function downloadlmu(date) {
                     <td></td>
                     <td>${mapstation[ssName].sent_out}</td>
                     <td>${maplv[ssName].sent_out}</td>
+                    <td></td>
                 </tr>
             `;
         } catch{
@@ -497,6 +516,7 @@ async function downloadlmu(date) {
                 <tr>
                     <td>${ssName}</td>
                     <td>Station</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

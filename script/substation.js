@@ -11,6 +11,10 @@ ssname.innerHTML = substationName;
 let feedersdata = [];
 let capbankdata = [];
 let linedata = [];
+
+let hrs2table = document.querySelector('.t2hrs');
+hrs2table.classList.add('t19');
+
 getallfeedernames(substationName).then(data =>{
     feedersdata = data;
     let table19 = document.querySelector('.t1');
@@ -180,6 +184,8 @@ function detail19(){
     }
     button19 = false;
     button24 = false;
+    let hrs2table = document.querySelector('.t2hrs');
+    hrs2table.classList.add('t19');
 }
 function detail24(){
     let t19table = document.querySelector('.det19');
@@ -194,6 +200,8 @@ function detail24(){
     }
     button24 = false;
     button19 = false;
+    let hrs2table = document.querySelector('.t2hrs');
+    hrs2table.classList.add('t19');
 }
 async function check19(date,ss) {
     const {data, error} = await supabaseClient.from('lmudet19hrs').select('*').eq('date',date).eq('substation_name',ss);
@@ -436,4 +444,107 @@ async function loadlinedata(array) {
 }
 function update(){
     window.location.href = 'update.html';
+}
+async function go2hrs(){
+    let hrs2table = document.querySelector('.t2hrs');
+    hrs2table.classList.remove('t19');
+    let t19table = document.querySelector('.det19');
+    let t24table = document.querySelector('.t2');
+    let t24tablel = document.querySelector('.t22');
+    t24table.classList.add('t24');
+    t24tablel.classList.add('t24');
+    t19table.classList.add('t19');
+
+    let agfeeders = await getagfeeder(substationName);
+
+    let htmlcode = ``;
+    let count = 1;
+    agfeeders.forEach(agf => {
+        htmlcode+= `
+            <tr>
+                <td>${agf.feeder_name}</td>
+                <td><input type="number" inputmode="decimal" 
+                        class="agf${count}" 
+                        placeholder="MWH"></td>
+            </tr>
+        `;
+        count++;
+    });
+
+    let hrs2tablebody = document.getElementById('t2hrs-body');
+    hrs2tablebody.innerHTML = htmlcode;
+}
+async function getagfeeder(ssName) {
+    const { data, error} = await supabaseClient
+        .from('feeders')
+        .select('feeder_name')
+        .eq('substation_name',ssName)
+        .eq('feeder_type','AG');
+    if (error) {
+        console.error("Error fetching feeders:", error.message);
+        return [];
+    }
+    return data;
+}
+async function check2hrs(date, ss) {
+    const {data, error} = await supabaseClient.from('new2hrsdetail').select('*').eq('date',date).eq('substation_name',ss);
+    if(error){
+        return false;
+    }
+    return data.length > 0;
+}
+async function submit2hrs() {
+    let date = document.getElementById('report-date').value;
+    if (!date) { alert("Please select a date first."); return; }
+    let button = document.querySelector('.b3');
+    let buttontext = document.querySelector('.bb3');
+    button.disabled = true;
+    buttontext.style.opacity = '0.5';
+    buttontext.innerText = 'Submitting...';
+
+    let newssname = substationName;
+    let ifdata = await check2hrs(date,newssname);
+    if(!ifdata){
+        let agfeeders = await getagfeeder(substationName);
+        let count = 1;
+        let agmwhdata = [];
+        agfeeders.forEach(agfeeder=>{
+            let mwh = document.querySelector(`.agf${count}`).value;
+
+            if(mwh){
+                agmwhdata.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'feeder_name' : agfeeder.feeder_name,
+                    'mwh2hrs' : mwh
+                });
+            } else {
+                agmwhdata.push({
+                    'date' : date,
+                    'substation_name' : newssname,
+                    'feeder_name' : agfeeder.feeder_name,
+                    'mwh2hrs' : '0'
+                });
+            }
+            count++;
+        });
+        if (agmwhdata.length>0){
+            load2hrsdetail(agmwhdata);
+        }
+        alert('✅ data submitted successfully');
+        buttontext.innerText = 'Submitted';
+    } else{
+        alert(`❌ Data already submitted for dt.${date}`);
+        buttontext.innerText = 'Submit Report';
+    }
+}
+async function load2hrsdetail(agdata) {
+    const { data, error } = await supabaseClient
+        .from('new2hrsdetail')
+        .insert(agdata);
+    if (error){
+        console.log('Error occured while uploading line data');
+    } else{
+        console.log('Line data uploaded successfully');
+    }
 }
