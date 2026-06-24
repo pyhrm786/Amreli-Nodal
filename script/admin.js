@@ -687,6 +687,17 @@ async function check24(date) {
         return data;
     }
 }
+async function check2hrs(date) {
+    const { data, error } = await supabaseClient
+        .from('new2hrsdetail')
+        .select('substation_name')
+        .eq('date',date);
+    if(error){
+        console.log('Error Occured while checking 24Hrs');
+    } else{
+        return data;
+    }
+}
 async function getstatus() {
     let date = document.getElementById('gen-date').value;
     let statusTable = document.querySelector('.status-table');
@@ -696,17 +707,20 @@ async function getstatus() {
             <th>Substation Name</th>
             <th>19Hrs</th>
             <th>24Hrs</th>
+            <th>Extra 2Hrs</th>
         </tr>
     `;
 
     try {
-        const [data19, data24] = await Promise.all([
+        const [data19, data24, data2hrs] = await Promise.all([
             check19(date),
-            check24(date)
+            check24(date),
+            check2hrs(date)
         ]);
 
         const ss_done19 = data19.map(ss => ss.substation_name);
         const ss_done24 = data24.map(ss => ss.substation_name);
+        const ss_done2hrs = data2hrs.map(ss => ss.substation_name);
         
         let databb = datass.map(ss => ss.substation_name);
         
@@ -724,6 +738,10 @@ async function getstatus() {
             let ss_24_td = document.createElement('td');
             ss_24_td.innerHTML = ss_done24.includes(ss) ? '🟢' : '🔴';
             ss_row.appendChild(ss_24_td);
+
+            let ss_2_td = document.createElement('td');
+            ss_2_td.innerHTML = ss_done2hrs.includes(ss) ? '🟢' : '🔴';
+            ss_row.appendChild(ss_2_td);
 
             statusTable.appendChild(ss_row);
         });
