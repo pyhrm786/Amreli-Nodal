@@ -449,7 +449,8 @@ async function downloadlmu(date) {
         "66kV Suryapratapgadh SS",
         "66kV Dahithara SS",
         "66kV Ishwariya SS",
-        "66kV Kariyana SS"
+        "66kV Kariyana SS",
+        "66kV Babra-B SS"
     ];
     substations.forEach(ss=>{
         const ssName = ss;
